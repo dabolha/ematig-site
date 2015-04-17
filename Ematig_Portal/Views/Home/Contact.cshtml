@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Contactos";
+    ViewBag.Description = "";
+}
+
+<header class="page-header">
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<p>@ViewBag.Description</p>
+
+<div class="container container_padding">
+    <div class="row">
+
+        <div id="map-canvas"></div>
+
+    </div>
+</div>
+
+<!-- SEP -->
+<div class="page-sep arrow blue">
+    <div class="container container_padding">
+        <div class="row">
+            <h4><i class="help"></i><a href="#">Precisas de ajuda? Envia-nos uma mensagem</a></h4>
+        </div>
+    </div>
+</div>
+
+<div class="container container_padding up bottom">
+    <div class="row">
+
+        <div class="col-sm-8">
+
+            <div class="row form-group">
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Nome" required="">
+                </div>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Sobrenome" required="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-5">
+                    <input type="email" class="form-control" name="email" placeholder="E-mail" required="">
+                </div>
+                <div class="col-xs-5">
+                    <input type="email" class="form-control" name="phone" placeholder="Telefone" required="">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-10">
+                    <textarea type="message" class="form-control" rows="5" placeholder="Mensagem" required=""></textarea>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-10">
+                    <input type="submit" name="submit" id="submit" value="Enviar" class="btn btn-info pull-right">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+
+            <address>
+                <strong>Empresa Angolana de Tecnologia e Importação Geral, Lda</strong><br>
+                <a href="https://www.google.pt/maps?q=Rua+C%C3%B3nego+Manuel+das+Neves,+204+R/C+Luanda+%E2%80%93+Angola&ion=1&espv=2&es_th=1&bav=on.2,or.r_cp.&bvm=bv.91071109,d.ZGU&biw=1280&bih=675&dpr=1&safe=active&um=1&ie=UTF-8&sa=X&ei=QbsvVaqtDKqQ7AbfmoHICw&ved=0CAYQ_AUoAQ">
+                    Rua Cónego Manuel das Neves, 204 R/C<br />Luanda – Angola<br>
+                </a>
+            </address>
+
+            <address>
+                <strong>Telef.:</strong>&nbsp;222430216 | 222430296<br>
+                <strong>E-mail:</strong>&nbsp;<a href="mailto:#">ematig.empresa@gmail.com</a>
+            </address>
+        </div>
+
+    </div>
+</div>
