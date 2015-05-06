@@ -90,11 +90,14 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="@Url.RouteUrl(HomeControllerRoute.GetIndex)"><span aria-hidden="true"></span> Início</a></li>
-                        <li><a href="@Url.RouteUrl(HomeControllerRoute.GetAbout)"><span aria-hidden="true"></span> Sobre nós</a></li>
-                        <li><a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)"><span aria-hidden="true"></span> Soluções</a></li>
-                        <li><a href="@Url.RouteUrl(HomeControllerRoute.GetContact)"><span aria-hidden="true"></span> Contactos</a></li>
-                        @if (HttpContext.Current.IsDebuggingEnabled)
+                        <li>@Html.ActionLink("Início", "Index", "Home", routeValues: null, htmlAttributes: new { id = "IndexLink" })</li>
+                        <li>@Html.ActionLink("Sobre nós", "About", "Home", routeValues: null, htmlAttributes: new { id = "AboutLink" })</li>
+                        <li>@Html.ActionLink("Soluções", "Solutions", "Home", routeValues: null, htmlAttributes: new { id = "SolutionsLink" })</li>
+                        <li>@Html.ActionLink("Contactos", "Contact", "Home", routeValues: null, htmlAttributes: new { id = "ContactLink" })</li>
+                        
+                        @Html.Partial("_LoginPartial")
+                        
+                        @if (Request.IsAuthenticated)
                         {
                             // if <compilation debug="true"> is set in Web.config.
                             <li class="dropdown">
@@ -139,7 +142,7 @@
             </div>
 
             <footer role="contentinfo" class="container_padding">
-                <p>&copy; @DateTime.Now.Year - @Application.Name</p>
+                <p>&copy; Copyright @Application.Name @DateTime.Now.Year. Todos os direitos reservados.</p>
             </footer>
         </div>
 

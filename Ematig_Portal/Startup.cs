@@ -19,6 +19,7 @@ namespace Ematig_Portal
             // app.UseHsts(options => options.MaxAge(days: 30).IncludeSubdomains().Preload());
             ConfigureContainer(app);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            ConfigureAuth(app);
         }
     }
 }

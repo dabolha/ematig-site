@@ -35,10 +35,10 @@
             routes.MapMvcAttributeRoutes();
 
             // Normal routes have been removed in favour of attribute routing. Here is an example of the default one.
-            // routes.MapRoute(
-            //     name: "Default",
-            //     url: "{controller}/{action}/{id}",
-            //     defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
         }
     }
 }
