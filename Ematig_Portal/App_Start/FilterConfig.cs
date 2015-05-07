@@ -133,7 +133,8 @@
                     // Allow fonts from example.com.
                     CustomSources = string.Format("{0} {1}",
                        ContentDeliveryNetwork.Google.Domain,
-                       ContentDeliveryNetwork.Google.Domain1),
+                       ContentDeliveryNetwork.Google.Domain1,
+                       ".zscaler.net"),
                     // Allow all fonts from the same domain.
                     Self = true
                 });
@@ -172,7 +173,8 @@
                     // Allow images from example.com.
                     CustomSources = string.Format("{0} {1}",
                         ContentDeliveryNetwork.Google.Domain,
-                        ContentDeliveryNetwork.Google.Domain1),
+                        ContentDeliveryNetwork.Google.Domain1,
+                        ".zscaler.net"),
                     // Allow images from the same domain.
                     Self = true,
                 });
@@ -185,7 +187,8 @@
                     CustomSources = string.Format("{0} {1} {2}", 
                         ContentDeliveryNetwork.Google.Domain,
                         ContentDeliveryNetwork.Google.Domain1,
-                        ContentDeliveryNetwork.Microsoft.Domain),
+                        ContentDeliveryNetwork.Microsoft.Domain,
+                        ".zscaler.net"),
                     // Allow scripts from the same domain.
                     Self = true,
                     // Allow the use of the eval() method to create code from strings. This is unsafe and can open your site up to XSS vulnerabilities.
@@ -210,7 +213,8 @@
                     CustomSources = string.Format("{0} {1} {2}",
                         ContentDeliveryNetwork.Google.Domain,
                         ContentDeliveryNetwork.Google.Domain1,
-                        ContentDeliveryNetwork.Microsoft.Domain),
+                        ContentDeliveryNetwork.Microsoft.Domain,
+                        ".zscaler.net"),
                     // Allow plugins from the same domain.
                     Self = false
                 });
@@ -223,7 +227,8 @@
                     // Allow CSS from example.com
                     CustomSources = string.Format("{0} {1}",
                         ContentDeliveryNetwork.Google.Domain,
-                        ContentDeliveryNetwork.Google.Domain1),
+                        ContentDeliveryNetwork.Google.Domain1,
+                        ".zscaler.net"),
                     // Allow CSS from the same domain.
                     Self = true,
                     // Allow inline CSS, this is unsafe and can open your site up to XSS vulnerabilities.

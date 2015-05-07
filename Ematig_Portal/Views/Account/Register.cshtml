@@ -27,12 +27,51 @@
 
                         @Html.ValidationSummary(true)
                         
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.FirstName)
+                            </div>
+                        </div>
                         
                         <div class="form-group">
-                            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                            @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.UserName)
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.LastName)
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Gender, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Gender)
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BirthDate, new { datepicker = true, @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.BirthDate)
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Address)
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PostCode, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.PostCode)
                             </div>
                         </div>
                         
@@ -49,6 +88,14 @@
                             <div class="col-md-10">
                                 @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.PhoneNumber)
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.MobilePhoneNumber, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.MobilePhoneNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.MobilePhoneNumber)
                             </div>
                         </div>
                         
@@ -73,7 +120,6 @@
                                 <button class="btn btn-lg btn-info btn-block" type="submit">Criar</button>
                             </div>
                         </div>
-
                     }
                 </section>
             </div>

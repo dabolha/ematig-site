@@ -9,23 +9,53 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Ematig_Portal.Models;
+using System.Data.Entity;
 
 namespace Ematig_Portal.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        #region Properties
+
+        public UserStore<ApplicationUser> _UserStore { get; private set; }
+        public UserManager<ApplicationUser> _UserManager { get; private set; }
+        public DbContext _UserDbContext
+        {
+            get
+            {
+                //if (this._UserStore != null)
+                //{
+                //    this._UserStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
+                //}
+
+                return this._UserStore.Context;
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        //public AccountController()
+        //    : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        //{
+        //}
+
+        //public AccountController(UserManager<ApplicationUser> userManager)
+        //{
+        //    this.UserManager = userManager;
+        //}
+
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
+            this._UserStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            this._UserManager = new UserManager<ApplicationUser>(this._UserStore);
         }
+        
+        #endregion
 
-        public AccountController(UserManager<ApplicationUser> userManager)
-        {
-            UserManager = userManager;
-        }
-
-        public UserManager<ApplicationUser> UserManager { get; private set; }
+        #region Login
 
         //
         // GET: /Account/Login
@@ -45,7 +75,7 @@ namespace Ematig_Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.Email, model.Password);
+                var user = await this._UserManager.FindAsync(model.Email, model.Password);
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
@@ -60,6 +90,21 @@ namespace Ematig_Portal.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        #endregion
+
+        #region Register
 
         //
         // GET: /Account/Register
@@ -79,12 +124,21 @@ namespace Ematig_Portal.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser()
-                { 
-                    UserName = model.UserName,
+                {
+                    FirstName = model.FirstName, 
+                    LastName = model.LastName, 
+                    Gender = model.Gender, 
+                    Address = model.Address,
+                    PostCode = model.PostCode,
+                    MobilePhoneNumber = model.MobilePhoneNumber,
+                    BirthDate = model.BirthDate,
+                    UserName = model.Email,
                     Email = model.Email,
-                    PhoneNumber = model.PhoneNumber
+                    PhoneNumber = model.PhoneNumber,
+                    CreationDate = DateTime.Now,
+                    ModificationDate = DateTime.Now 
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await this._UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
@@ -100,6 +154,136 @@ namespace Ematig_Portal.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Manage
+
+        //
+        // GET: /Account/Manage
+        public ActionResult Manage(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangeInfoSuccess ? "Your information has been changed."
+                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : "";
+
+            ViewBag.HasLocalPassword = HasPassword();
+            ViewBag.ReturnUrl = Url.Action("Manage");
+
+            var user = this._UserManager.FindById(User.Identity.GetUserId());
+            if (user != null)
+            {
+                ManageUserViewModel model = new ManageUserViewModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Gender = user.Gender,
+                    Address = user.Address,
+                    PostCode = user.PostCode,
+                    MobilePhoneNumber = user.MobilePhoneNumber,
+                    BirthDate = user.BirthDate,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber
+                };
+
+                return View(model);
+            }
+
+            return View();
+        }
+
+        //
+        // POST: /Account/Manage
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ManagePassword(ManagePasswordViewModel model)
+        {
+            if (model != null)
+            {
+                #region Change Password
+                bool hasPassword = HasPassword();
+                ViewBag.HasLocalPassword = hasPassword;
+                ViewBag.ReturnUrl = Url.Action("Manage");
+                if (hasPassword)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        IdentityResult result = await this._UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                        if (!result.Succeeded)
+                        {
+                            AddErrors(result);
+                        }
+                    }
+                }
+                else
+                {
+                    // User does not have a password so remove any validation errors caused by a missing OldPassword field
+                    ModelState state = ModelState["OldPassword"];
+                    if (state != null)
+                    {
+                        state.Errors.Clear();
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        IdentityResult result = await this._UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                        if (!result.Succeeded)
+                        {
+                            AddErrors(result);
+                        }
+                    }
+                }
+                #endregion
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // POST: /Account/Manage
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Manage(ManageUserViewModel model)
+        {
+            if (model != null)
+            {
+                #region ChangeUserInfo
+                var user = this._UserManager.FindById(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Gender = model.Gender;
+                    user.Address = model.Address;
+                    user.PostCode = model.PostCode;
+                    user.MobilePhoneNumber = model.MobilePhoneNumber;
+                    user.BirthDate = model.BirthDate;
+                    user.UserName = model.Email;
+                    user.Email = model.Email;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.ModificationDate = DateTime.Now;
+
+                    await this._UserManager.UpdateAsync(user);
+                    if (this._UserDbContext.SaveChanges() > 0)
+                    {
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid user.");
+                }
+                #endregion
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        #endregion
+
         //
         // POST: /Account/Disassociate
         [HttpPost]
@@ -107,7 +291,7 @@ namespace Ematig_Portal.Controllers
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
             ManageMessageId? message = null;
-            IdentityResult result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            IdentityResult result = await this._UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 message = ManageMessageId.RemoveLoginSuccess;
@@ -117,72 +301,6 @@ namespace Ematig_Portal.Controllers
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("Manage", new { Message = message });
-        }
-
-        //
-        // GET: /Account/Manage
-        public ActionResult Manage(ManageMessageId? message)
-        {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
-        }
-
-        //
-        // POST: /Account/Manage
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Manage(ManageUserViewModel model)
-        {
-            bool hasPassword = HasPassword();
-            ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasPassword)
-            {
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
-                }
-            }
-            else
-            {
-                // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //
@@ -204,7 +322,7 @@ namespace Ematig_Portal.Controllers
             {
                 return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
             }
-            var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
+            var result = await this._UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage");
@@ -212,76 +330,20 @@ namespace Ematig_Portal.Controllers
             return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
-                var user = new ApplicationUser() { UserName = model.UserName };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInAsync(user, isPersistent: false);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
-        }
-
-        //
-        // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
-
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
+            var linkedAccounts = this._UserManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && UserManager != null)
+            if (disposing && this._UserManager != null)
             {
-                UserManager.Dispose();
-                UserManager = null;
+                this._UserManager.Dispose();
+                this._UserManager = null;
             }
             base.Dispose(disposing);
         }
@@ -300,8 +362,11 @@ namespace Ematig_Portal.Controllers
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
+            if(user != null)
+                user.UserName = user.FirstName;
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var identity = await this._UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
@@ -315,7 +380,7 @@ namespace Ematig_Portal.Controllers
 
         private bool HasPassword()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = this._UserManager.FindById(User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -325,8 +390,7 @@ namespace Ematig_Portal.Controllers
 
         public enum ManageMessageId
         {
-            ChangePasswordSuccess,
-            SetPasswordSuccess,
+            ChangeInfoSuccess,
             RemoveLoginSuccess,
             Error
         }
