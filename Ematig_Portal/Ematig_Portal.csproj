@@ -224,6 +224,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Framework\CspViolationException.cs" />
     <Compile Include="Framework\SitemapFrequency.cs" />
     <Compile Include="Framework\SitemapNode.cs" />
@@ -235,15 +236,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201505061730524_InitialCreate.cs" />
-    <Compile Include="Migrations\201505061730524_InitialCreate.Designer.cs">
-      <DependentUpon>201505061730524_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505071420140_UserInfo.cs" />
-    <Compile Include="Migrations\201505071420140_UserInfo.Designer.cs">
-      <DependentUpon>201505071420140_UserInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Data\DbContext.cs" />
+    <Compile Include="Models\Data\Message.cs" />
+    <Compile Include="Models\MessageViewModels .cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Data\IdentityModels.cs" />
@@ -472,24 +468,16 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\_ChangeInfoPartial.cshtml" />
+    <Content Include="Views\Message\_SendMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\img\" />
-    <Folder Include="Views\Message\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505061730524_InitialCreate.resx">
-      <DependentUpon>201505061730524_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505071420140_UserInfo.resx">
-      <DependentUpon>201505071420140_UserInfo.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

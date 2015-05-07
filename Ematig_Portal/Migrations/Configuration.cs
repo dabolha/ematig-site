@@ -5,15 +5,15 @@ namespace Ematig_Portal.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Ematig_Portal.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Ematig_Portal.Models.Context>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Ematig_Portal.Models.ApplicationDbContext";
+            ContextKey = "Ematig_Portal.Models.Context";
         }
 
-        protected override void Seed(Ematig_Portal.Models.ApplicationDbContext context)
+        protected override void Seed(Ematig_Portal.Models.Context context)
         {
             //  This method will be called after migrating to the latest version.
 

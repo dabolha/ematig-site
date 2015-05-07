@@ -26,7 +26,7 @@ namespace Ematig_Portal.Controllers
             {
                 //if (this._UserStore != null)
                 //{
-                //    this._UserStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
+                //    this._UserStore = new UserStore<ApplicationUser>(new UserIdentityDbContext());
                 //}
 
                 return this._UserStore.Context;
@@ -38,7 +38,7 @@ namespace Ematig_Portal.Controllers
         #region Constructor
 
         //public AccountController()
-        //    : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        //    : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new UserIdentityDbContext())))
         //{
         //}
 
@@ -49,7 +49,7 @@ namespace Ematig_Portal.Controllers
 
         public AccountController()
         {
-            this._UserStore = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            this._UserStore = new UserStore<ApplicationUser>(new UserIdentityDbContext());
             this._UserManager = new UserManager<ApplicationUser>(this._UserStore);
         }
         
