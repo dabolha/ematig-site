@@ -1,0 +1,43 @@
+﻿@using Ematig_Portal.Models;
+@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<ManageUserViewModel>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Utilizadores";
+}
+
+<header class="page-header">
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-intro section-login">
+    <div class="container container_padding box_size1">
+        <div class="row">
+            @Html.Grid(Model).Columns(columns =>
+                    {
+                        columns.Add()
+                                .Encoded(false)
+                                .Sanitized(false)
+                                .SetWidth(10)
+                                .RenderValueAs(c => @<b><a href="@Url.Action("Manage", "Account", new { id = c.Id })"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a></b>);
+                        columns.Add(c => c.Id).Titled("ID").Sortable(true);
+                        columns.Add(c => c.LastName)
+                            .Titled("Nome")
+                            .RenderValueAs(c => c.FirstName + " " + c.LastName).Filterable(true).Sortable(true).SetFilterWidgetType("NameFilterWidget");
+                        columns.Add(c => c.Email).Titled("Email").Sortable(true);
+                        columns.Add(c => c.PhoneNumber).Titled("Telefone");
+                        columns.Add(c => c.MobilePhoneNumber).Titled("Telemóvel");
+                    }).WithPaging(3)
+        </div>
+    </div>
+</section>

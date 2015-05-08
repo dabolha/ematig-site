@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ematig_Portal.Models
@@ -12,6 +13,7 @@ namespace Ematig_Portal.Models
 
     public class ManageUserViewModel
     {
+        [Key]
         public long Id { get; set; }
 
         [Required]

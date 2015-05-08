@@ -59,15 +59,24 @@ namespace Ematig_Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await this._UserIdentityManager.FindAsync(model.Email, model.Password);
-                if (user != null)
-                {
-                    await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
-                }
-                else
+                var identityUser = await this._UserIdentityManager.FindAsync(model.Email, model.Password);
+                if (identityUser == null)
                 {
                     ModelState.AddModelError("", "Invalid username or password.");
+                    return View(model);
+                }
+
+                using (var context = this._BbContext)
+                {
+                    var user = context.User.FirstOrDefault(item => item.AuthId == identityUser.Id);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError("", "Invalid username or password.");
+                        return View(model);
+                    }
+
+                    await SignInAsync(identityUser, user, model.RememberMe);
+                    return RedirectToLocal(returnUrl);
                 }
             }
 
@@ -143,7 +152,7 @@ namespace Ematig_Portal.Controllers
 
                 if (context.SaveChanges() > 0)
                 {
-                    await SignInAsync(identityUser, isPersistent: false);
+                    await SignInAsync(identityUser, user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -161,31 +170,34 @@ namespace Ematig_Portal.Controllers
         #region Manage
 
         //
-        // GET: /Account/Manage
-        public ActionResult Manage(ManageMessageId? message)
+        // GET: /Account/Manage/id
+        public ActionResult Manage(long? id)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangeInfoSuccess ? "Your information has been changed."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+            //ViewBag.StatusMessage =
+            //    message == ManageMessageId.ChangeInfoSuccess ? "Your information has been changed."
+            //    : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+            //    : message == ManageMessageId.Error ? "An error has occurred."
+            //    : "";
 
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.ReturnUrl = Url.Action("All");
 
-            var identityUser = this._UserIdentityManager.FindById(User.Identity.GetUserId());
-            if (identityUser == null)
-            {
-                //TODO: error
-                return View();
-            }
+            string authId = User.Identity.GetUserId();
 
             using (var context = this._BbContext)
             {
-                var user = context.User.FirstOrDefault(item => item.AuthId == identityUser.Id);
-                if(user == null)
+                var user = context
+                    .User.FirstOrDefault
+                        (
+                            item => 
+                                (id != null) 
+                                ? (item.Id == id)
+                                : ((item.AuthId ?? "").Trim() == (authId ?? "").Trim())
+
+                        );
+
+                if (user == null)
                 {
-                    //TODO: error
+                    //TODO: error 
                     return View();
                 }
 
@@ -284,6 +296,42 @@ namespace Ematig_Portal.Controllers
 
         #endregion
 
+        #region Get
+
+        //
+        // GET: /Account/All
+        public ActionResult All()
+        {
+            using (var context = this._BbContext)
+            {
+                var userList = context.User.ToList();
+                if (userList == null || userList.Count == 0)
+                {
+                    return View();
+                }
+
+                IEnumerable<ManageUserViewModel> list = userList
+                    .Select(item => new ManageUserViewModel()
+                    {
+                        Id = item.Id,
+                        FirstName = item.FirstName,
+                        LastName = item.LastName,
+                        Gender = item.Gender,
+                        Address = item.Address,
+                        PostCode = item.PostCode,
+                        MobilePhoneNumber = item.MobilePhoneNumber,
+                        BirthDate = item.BirthDate,
+                        Email = item.Email,
+                        PhoneNumber = item.PhoneNumber
+                    })
+                    .ToList();
+
+                return View(list);
+            }
+        }
+
+        #endregion
+
         //
         // POST: /Account/Disassociate
         [HttpPost]
@@ -360,18 +408,14 @@ namespace Ematig_Portal.Controllers
             }
         }
 
-        private async Task SignInAsync(ApplicationUser identityUser, bool isPersistent)
+        private async Task SignInAsync(ApplicationUser identityUser, User user, bool isPersistent)
         {
             if (identityUser == null)
                 return;
 
-            using (var context = this._BbContext)
+            if (user != null)
             {
-                var user = context.User.FirstOrDefault(item => item.AuthId == identityUser.Id);
-                if (user != null)
-                {
-                    identityUser.UserName = user.FirstName;
-                }
+                identityUser.UserName = user.FirstName;
             }
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);

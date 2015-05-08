@@ -12,3 +12,5 @@
 /// <reference path="failover/jqueryvalunobtrusive.js" />
 /// <reference path="failover/modernizr.js" />
 /// <reference path="failover/respond.js" />
+/// <reference path="gridmvc.js" />
+/// <reference path="gridmvc.lang.ru.js" />

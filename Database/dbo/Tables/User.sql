@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[User] (
-    [Id]                   BIGINT NOT NULL,
+    [Id]                   BIGINT NOT NULL IDENTITY,
 	[AuthId]               NVARCHAR (128) NOT NULL,
     [Email]                NVARCHAR (256) NULL,
     [PhoneNumber]          NVARCHAR (MAX) NULL,
