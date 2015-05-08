@@ -10,17 +10,7 @@ namespace Ematig_Portal.Models
     public class UserIdentityDbContext : IdentityDbContext<ApplicationUser>
     {
         public UserIdentityDbContext()
-            : base("DefaultConnection")
-        {
-        }
-    }
-
-    public class Context : DbContext
-    {
-        public DbSet<Message> Messages { get; set; }
-
-        public Context()
-            : base("DefaultConnection")
+            : base("UserIdentityDbContext")
         {
         }
     }

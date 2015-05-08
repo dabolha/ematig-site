@@ -12,6 +12,8 @@ namespace Ematig_Portal.Models
 
     public class ManageUserViewModel
     {
+        public long Id { get; set; }
+
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Nome")]
@@ -56,16 +58,11 @@ namespace Ematig_Portal.Models
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Telemóvel")]
         public string MobilePhoneNumber { get; set; }
-    }
 
-    public class ManagePasswordViewModel
-    {
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }
 
-        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]

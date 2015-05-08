@@ -136,10 +136,13 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -236,13 +239,56 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Data\DbContext.cs" />
-    <Compile Include="Models\Data\Message.cs" />
+    <Compile Include="Models\Data\AspNetRoles.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\AspNetUserClaims.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\AspNetUserLogins.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\AspNetUsers.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\EmatigBD.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmatigBD.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\EmatigBD.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\EmatigBD.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmatigBD.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\Identity\UserIdentityDbContext.cs" />
+    <Compile Include="Models\Data\Message.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\MessageChannel.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\MessageType.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\MessageTypeDestination.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\MessageTypeMessageChannel.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data\User.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MessageViewModels .cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ErrorModel.cs" />
-    <Compile Include="Models\Data\IdentityModels.cs" />
+    <Compile Include="Models\Data\Identity\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Logging\ILoggingService.cs" />
     <Compile Include="Services\Logging\LoggingService.cs" />
@@ -329,6 +375,23 @@
     <Content Include="Content\icons\android-chrome-72x72.png" />
     <Content Include="Content\icons\android-chrome-96x96.png" />
     <Content Include="Content\icons\manifest.json" />
+    <EntityDeploy Include="Models\Data\EmatigBD.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EmatigBD.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Data\EmatigBD.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EmatigBD.edmx</DependentUpon>
+      <LastGenOutput>EmatigBD.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Data\EmatigBD.edmx.diagram">
+      <DependentUpon>EmatigBD.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Data\EmatigBD.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EmatigBD.edmx</DependentUpon>
+      <LastGenOutput>EmatigBD.cs</LastGenOutput>
+    </Content>
     <None Include="ReadMe.html" />
     <Content Include="Content\bootstrap\site.css">
       <DependentUpon>site.less</DependentUpon>
@@ -461,7 +524,6 @@
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Home\Management.cshtml" />
     <Content Include="Views\Home\Solutions.cshtml" />
-    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
@@ -478,6 +540,9 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
