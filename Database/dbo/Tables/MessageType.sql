@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[MessageType]
+(
+	[Id] SMALLINT NOT NULL PRIMARY KEY,  
+    [Name] NVARCHAR(128) NOT NULL
+)
