@@ -16,6 +16,9 @@ namespace Ematig_Portal.Models
         [Key]
         public long Id { get; set; }
 
+        [Key]
+        public string AuthId { get; set; }
+
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Nome")]
@@ -42,8 +45,9 @@ namespace Ematig_Portal.Models
         public string PostCode { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "Data de nascimento")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
 
         [Required]

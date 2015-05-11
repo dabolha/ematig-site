@@ -266,9 +266,21 @@ p.copyright {
   border-color: #494949;
 }
 
+.btn-info-inv {
+  color: #ffffff;
+  background-color: #494949;
+  border-color: #494949;
+}
+
 .btn-info:hover, .btn-info:active, .btn-info:focus {
   color: #ffffff;
   background-color: #494949;
+  border-color: #494949;
+}
+
+.btn-info-inv:hover, .btn-info:active, .btn-info:focus {
+  color: #ffffff;
+  background-color: #2B2C7C;
   border-color: #494949;
 }
 

@@ -1,7 +1,7 @@
 ﻿@model RegisterViewModel
 
 @{
-    ViewBag.Title = "Criar nova conta";
+    ViewBag.Title = "Criar novo utilizador";
 }
 
 <header class="page-header">
@@ -52,9 +52,9 @@
                         </div>
                         
                         <div class="form-group">
-                            @Html.LabelFor(m => m.BirthDate, new { datepicker = true, @class = "col-md-2 control-label" })
+                            @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control datepicker" })
                                 @Html.ValidationMessageFor(m => m.BirthDate)
                             </div>
                         </div>
@@ -114,11 +114,10 @@
                                 @Html.ValidationMessageFor(m => m.ConfirmPassword)
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button class="btn btn-lg btn-info btn-block" type="submit">Criar</button>
-                            </div>
+
+                        <div class="row btn-toolbar">
+                            <button class="btn btn-info pull-right" type="submit">Criar</button>
+                            @Html.ActionLink("Cancelar", "All", "Account", null, new { @class = "btn btn-info-inv pull-right" })
                         </div>
                     }
                 </section>

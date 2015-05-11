@@ -85,7 +85,8 @@
 
             // Bootstrap - Twitter Bootstrap JavaScript (http://getbootstrap.com/).
             Bundle bootstrapBundle = new ScriptBundle("~/bundles/bootstrap", ContentDeliveryNetwork.Microsoft.BootstrapUrl)
-                .Include("~/Scripts/bootstrap.js");
+                .Include("~/Scripts/bootstrap.js")
+                .Include("~/Scripts/bootstrap-datepicker.js");
             bundles.Add(bootstrapBundle);
 
             // Respond.js - A fast & lightweight polyfill for min/max-width CSS3 Media Queries (https://github.com/scottjehl/Respond). 

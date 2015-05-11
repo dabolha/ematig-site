@@ -19,22 +19,44 @@ namespace Ematig_Portal.Controllers
     {
         #region Properties
 
+        //UserIdentityDbContext
+        private UserStore<ApplicationUser> _UserStore { get; set; }
+        private UserIdentityDbContext _UserIdentityContext
+        {
+            get
+            {
+                if (this._UserStore != null)
+                    return _UserStore.Context as UserIdentityDbContext;
+
+                return new UserIdentityDbContext();
+            }
+        }
         private UserManager<ApplicationUser> _UserIdentityManager { get; set; }
+
+        //EmatigBbContext
         private EmatigBbContext _BbContext { get; set; }
 
         #endregion
 
         #region Constructor
 
+        //public AccountController()
+        //    : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new UserIdentityDbContext())))
+        //{
+        //    this._BbContext = new EmatigBbContext();
+        //}
+
+        //public AccountController(UserManager<ApplicationUser> userManager)
+        //{
+        //    this._UserIdentityManager = userManager;
+        //}
+
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new UserIdentityDbContext())))
         {
             this._BbContext = new EmatigBbContext();
-        }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
-        {
-            this._UserIdentityManager = userManager;
+            this._UserStore = new UserStore<ApplicationUser>(new UserIdentityDbContext());
+            this._UserIdentityManager = new UserManager<ApplicationUser>(this._UserStore);
         }
 
         #endregion
@@ -152,7 +174,7 @@ namespace Ematig_Portal.Controllers
 
                 if (context.SaveChanges() > 0)
                 {
-                    await SignInAsync(identityUser, user, isPersistent: false);
+                    //await SignInAsync(identityUser, user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -204,6 +226,7 @@ namespace Ematig_Portal.Controllers
                 ManageUserViewModel model = new ManageUserViewModel
                 {
                     Id = user.Id,
+                    AuthId = user.AuthId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Gender = user.Gender,
@@ -227,18 +250,13 @@ namespace Ematig_Portal.Controllers
         {
             if (model != null)
             {
-                #region ChangeUserInfo
-                var identityUser = this._UserIdentityManager.FindById(User.Identity.GetUserId());
-                if (identityUser == null)
-                {
-                    //TODO: error
-                    ModelState.AddModelError("", "Invalid user.");
-                    return View(model);
-                }
+                bool emailChanged = false;
 
+                #region ChangeUserInfo
+                
                 using (var context = this._BbContext)
                 {
-                    var user = context.User.FirstOrDefault(item => item.AuthId == identityUser.Id);
+                    var user = context.User.FirstOrDefault(item => item.Id == model.Id);
                     if (user == null)
                     {
                         //TODO: error
@@ -249,21 +267,8 @@ namespace Ematig_Portal.Controllers
                     #region Email changed
                     if ((user.Email ?? "").Trim().ToLower() != (model.Email ?? "").Trim().ToLower())
                     {
-                      //TODO: Not available
-                    }
-                    #endregion
-
-                    #region Password changed
-                    if (!string.IsNullOrEmpty(model.OldPassword) && !string.IsNullOrEmpty(model.NewPassword) && !string.IsNullOrEmpty(model.ConfirmPassword))
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            IdentityResult result = await this._UserIdentityManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                            if (!result.Succeeded)
-                            {
-                                AddErrors(result);
-                            }
-                        }
+                        emailChanged = true;
+                        user.Email = (model.Email ?? "").Trim();
                     }
                     #endregion
 
@@ -283,11 +288,52 @@ namespace Ematig_Portal.Controllers
                         ModelState.AddModelError("", "Invalid user.");
                         return View(model);
                     }
-
-                    return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
                 }
-                
+
                 #endregion
+
+                #region Email changed
+                if (emailChanged)
+                {
+                    using (var context = this._UserIdentityContext)
+                    {
+                        var identityUser = context.Users.FirstOrDefault(item => item.Id == model.AuthId);
+                        if (identityUser == null)
+                        {
+                            //TODO: error
+                            ModelState.AddModelError("", "Invalid user.");
+                            return View(model);
+                        }
+
+                        identityUser.UserName = (model.Email ?? "").Trim();
+
+                        if (context.SaveChanges() <= 0)
+                        {
+                            //TODO: error
+                            ModelState.AddModelError("", "Invalid user.");
+                            return View(model);
+                        }
+                    }
+                }
+                #endregion
+
+                #region Password changed
+                if (!string.IsNullOrEmpty(model.OldPassword) && !string.IsNullOrEmpty(model.NewPassword) && !string.IsNullOrEmpty(model.ConfirmPassword))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        IdentityResult result = await this._UserIdentityManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                        if (!result.Succeeded)
+                        {
+                            AddErrors(result);
+                        }
+                    }
+                }
+                #endregion
+
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
+
+                
             }
 
             // If we got this far, something failed, redisplay form

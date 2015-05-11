@@ -168,6 +168,15 @@
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
 
+        <script type="text/javascript">
+            $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+            $('.datepicker').datepicker(
+                {
+                    autoclose: true
+                });
+            $('.datepicker').prop('readonly', true);
+        </script>
+
         @RenderSection("scripts", required: false)
-    </body>
+        </body>
 </html>

@@ -22,6 +22,8 @@
 
 <section class="section-intro section-login">
     <div class="container container_padding box_size1">
+
+
         <div class="row">
             @Html.Grid(Model).Columns(columns =>
                     {
@@ -38,6 +40,12 @@
                         columns.Add(c => c.PhoneNumber).Titled("Telefone");
                         columns.Add(c => c.MobilePhoneNumber).Titled("Telemóvel");
                     }).WithPaging(3)
+        </div>
+
+
+        <div class="row btn-toolbar">
+            @Html.ActionLink("Novo utilizador", "Register", "Account", null, new { @class = "btn btn-info pull-right" })
+            @Html.ActionLink("Voltar", "Index", "Home", null, new { @class = "btn btn-info-inv pull-right" })
         </div>
     </div>
 </section>
