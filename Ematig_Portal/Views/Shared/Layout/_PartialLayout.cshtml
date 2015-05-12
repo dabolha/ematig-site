@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout/_MainLayout.cshtml";
+}
+
+<header class="page-header">
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+@{ Html.RenderPartial("_Alerts"); }
+
+@RenderBody()

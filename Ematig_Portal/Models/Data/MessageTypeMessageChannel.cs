@@ -13,7 +13,7 @@ namespace Ematig_Portal.Models.Data
     using System.Collections.Generic;
     
     public partial class MessageTypeMessageChannel
-    { 
+    {
         public short MessageTypeId { get; set; }
         public short MessageChannelId { get; set; }
         public string Subject { get; set; }

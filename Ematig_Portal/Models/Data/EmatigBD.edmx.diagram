@@ -8,21 +8,22 @@
         <EntityTypeShape EntityType="EmatigBDModel.AspNetRoles" Width="1.5" PointX="5.75" PointY="11.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EmatigBDModel.AspNetUserClaims" Width="1.5" PointX="10.25" PointY="9.625" IsExpanded="true" />
         <EntityTypeShape EntityType="EmatigBDModel.AspNetUserLogins" Width="1.5" PointX="10.25" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmatigBDModel.MessageChannel" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmatigBDModel.MessageType" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmatigBDModel.MessageTypeDestination" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmatigBDModel.MessageTypeMessageChannel" Width="1.5" PointX="6" PointY="5.5" IsExpanded="true" />
-        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageChannel" ManuallyRouted="false" />
-        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeDestination_MessageType" ManuallyRouted="false" />
-        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageType" ManuallyRouted="false" />
         <EntityTypeShape EntityType="EmatigBDModel.AspNetUsers" Width="1.5" PointX="8" PointY="15.875" />
         <AssociationConnector Association="EmatigBDModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EmatigBDModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="EmatigBDModel.AspNetUserRoles" />
-        <EntityTypeShape EntityType="EmatigBDModel.Message" Width="1.5" PointX="3" PointY="3.125" />
         <EntityTypeShape EntityType="EmatigBDModel.User" Width="1.5" PointX="10.25" PointY="16.125" />
         <AssociationConnector Association="EmatigBDModel.FK_User_ToTable" />
+        <EntityTypeShape EntityType="EmatigBDModel.Message" Width="1.5" PointX="3" PointY="2.75" />
+        <EntityTypeShape EntityType="EmatigBDModel.MessageChannel" Width="1.5" PointX="3.75" PointY="6.75" />
+        <EntityTypeShape EntityType="EmatigBDModel.MessageType" Width="1.5" PointX="0.75" PointY="4.5" />
+        <EntityTypeShape EntityType="EmatigBDModel.MessageTypeDestination" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="EmatigBDModel.MessageTypeMessageChannel" Width="1.5" PointX="6" PointY="4.5" />
+        <EntityTypeShape EntityType="EmatigBDModel.Settings" Width="1.5" PointX="5.75" PointY="0.75" />
         <AssociationConnector Association="EmatigBDModel.FK_Message_MessageType" />
+        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageChannel" />
+        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeDestination_MessageType" />
+        <AssociationConnector Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

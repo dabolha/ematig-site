@@ -103,6 +103,11 @@ h6 {
     letter-spacing: 2px;
 }
 
+.section-alert {
+    margin-bottom: -100px;
+    min-height: 100px;
+}
+
 .section-heading {
     margin-bottom: 30px;
 }

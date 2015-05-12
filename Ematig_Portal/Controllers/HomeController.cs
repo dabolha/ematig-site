@@ -9,7 +9,7 @@
     using Ematig_Portal.Framework;
     using Ematig_Portal.Services;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ISitemapService sitemapService;
 

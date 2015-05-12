@@ -1,0 +1,32 @@
+﻿@using Ematig_Portal.Models;
+@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<SettingsViewModel>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Configurações gerais";
+}
+
+<section class="section-intro section-login">
+    <div class="container container_padding box_size1">
+
+        <div class="row">
+            @Html.Grid(Model).Columns(columns =>
+                    {
+                        columns.Add()
+                                .Encoded(false)
+                                .Sanitized(false)
+                                .SetWidth(10)
+                                .RenderValueAs(c => @<b><a href="@Url.Action("Edit", "Settings", new { id = c.Key })"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a></b>);
+                        columns.Add(c => c.Name).Titled("Nome").Sortable(true);
+                        columns.Add(c => c.Key).Titled("Chave").Sortable(true);
+                        columns.Add(c => c.Value).Titled("Valor");
+                    }).WithPaging(20)
+        </div>
+        
+        <div class="row btn-toolbar">
+            @Html.ActionLink("Voltar", "Index", "Home", null, new { @class = "btn btn-info-inv pull-right" })
+        </div>
+    </div>
+</section>

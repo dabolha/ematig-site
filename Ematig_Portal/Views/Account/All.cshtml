@@ -8,21 +8,8 @@
     ViewBag.Title = "Utilizadores";
 }
 
-<header class="page-header">
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2>@ViewBag.Title</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
 <section class="section-intro section-login">
     <div class="container container_padding box_size1">
-
 
         <div class="row">
             @Html.Grid(Model).Columns(columns =>
@@ -39,7 +26,7 @@
                         columns.Add(c => c.Email).Titled("Email").Sortable(true);
                         columns.Add(c => c.PhoneNumber).Titled("Telefone");
                         columns.Add(c => c.MobilePhoneNumber).Titled("Telemóvel");
-                    }).WithPaging(3)
+                    }).WithPaging(20)
         </div>
 
 

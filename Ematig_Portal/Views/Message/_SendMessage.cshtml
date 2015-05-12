@@ -1,29 +1,55 @@
 ﻿
 @model SendMessageViewModel
 
-<div class="row form-group">
-    <div class="col-xs-5">
-        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Nome" required="">
+@using (Html.BeginForm("Send", "Message", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+    
+    <div class="row form-group">
+        <div class="col-xs-5">
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "Nome" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+        <div class="col-xs-5">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Sobrenome" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
     </div>
-    <div class="col-xs-5">
-        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Sobrenome" required="">
+    <div class="row form-group">
+        <div class="col-xs-5">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-mail" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+        <div class="col-xs-5">
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Telefone" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
     </div>
-</div>
-<div class="row form-group">
-    <div class="col-xs-5">
-        <input type="email" class="form-control" name="email" placeholder="E-mail" required="">
+    <div class="row form-group">
+        <div class="col-xs-10">
+
+                @Html.DropDownListFor(m => m.Title,
+                  new List<SelectListItem> {
+                       new SelectListItem { Value = "Quero ser contactado." , Text = "Quero ser contactado." },
+                       new SelectListItem { Value = "Pedido de informações." , Text = "Pedido de informações." },
+                       new SelectListItem { Value = "Outro." , Text = "Outro." }
+                    },
+                  new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.Title)
+        </div>
     </div>
-    <div class="col-xs-5">
-        <input type="email" class="form-control" name="phone" placeholder="Telefone" required="">
+    <div class="row form-group">
+        <div class="col-xs-10">
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control", @placeholder = "Mensagem" })
+            @Html.ValidationMessageFor(m => m.Message)
+        </div>
     </div>
-</div>
-<div class="row form-group">
-    <div class="col-xs-10">
-        <textarea type="message" class="form-control" rows="5" placeholder="Mensagem" required=""></textarea>
+    <div class="row form-group">
+        <div class="col-xs-10">
+            <input type="submit" name="submit" id="submit" value="Enviar" class="btn btn-info pull-right">
+        </div>
     </div>
-</div>
-<div class="row form-group">
-    <div class="col-xs-10">
-        <input type="submit" name="submit" id="submit" value="Enviar" class="btn btn-info pull-right">
-    </div>
-</div>
+}

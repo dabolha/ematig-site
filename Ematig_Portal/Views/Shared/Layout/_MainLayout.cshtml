@@ -26,7 +26,7 @@
     @* manifest-json - The location of the browser configuration file. It contains locations of icon files, name of the application and default device screen orientation. Note that the name field is mandatory.
         https://developer.chrome.com/multidevice/android/installtohomescreen. *@
     <link rel="manifest" href="/content/icons/manifest.json">
- 
+
     @* Windows 8.1 IE11 *@
     @* msapplication-config - The location of the browser configuration file. If you have an RSS feed, go to
         http://www.buildmypinnedsite.com and regenerate the browserconfig.xml file. You will then have a cool live tile! *@
@@ -36,7 +36,7 @@
     @* Custom Fonts - If you are using custom fonts. Consider using the Google Web Fonts Loader in async mode https://github.com/typekit/webfontloader. *@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+
     @* Google Maps *@
     @Styles.Render("http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic")
     @Scripts.Render("https://maps.googleapis.com/maps/api/js")
@@ -49,28 +49,28 @@
         <meta name="author" content="@ViewBag.Author">
     }
     @* Canonical - The URL of the current page. Stops case differences and http/https being treated as different URL's by search engines. The settings in this project should make this redundant, unless you are mixing HTTP and HTTPS. *@
-    @* <link rel="canonical" href=""> *@
+        @* <link rel="canonical" href=""> *@
 
 
-    @* OpenSearch (See http://www.hanselman.com/blog/CommentView.aspx?guid=50cc95b1-c043-451f-9bc2-696dc564766d#commentstart and http://www.opensearch.org) *@
-    <link href="@Url.RouteUrl(HomeControllerRoute.OpenSearchXml).TrimEnd('/')" rel="search" title="Ematig" type="application/opensearchdescription+xml">
+        @* OpenSearch (See http://www.hanselman.com/blog/CommentView.aspx?guid=50cc95b1-c043-451f-9bc2-696dc564766d#commentstart and http://www.opensearch.org) *@
+        <link href="@Url.RouteUrl(HomeControllerRoute.OpenSearchXml).TrimEnd('/')" rel="search" title="Ematig" type="application/opensearchdescription+xml">
 
 
-    @*
-        TODO: Social Media Meta Tags
-        Facebook OpenGraph - https://developers.facebook.com/docs/opengraph
-        Twitter Cards - https://dev.twitter.com/cards/getting-started
-        http://moz.com/blog/meta-data-templates-123
-    *@
-    @*
-        TODO: Structured Data - Metadata for HTML e.g. Book, Location etc.
-        schema.org - Schema database
-        http://schema.org
-        Schema Creator - Create HTML schemas
-        http://schema-creator.org/
-        Structured Data Testing Tool - Test HTML schemas
-        http://www.google.com/webmasters/tools/richsnippets
-    *@
+        @*
+            TODO: Social Media Meta Tags
+            Facebook OpenGraph - https://developers.facebook.com/docs/opengraph
+            Twitter Cards - https://dev.twitter.com/cards/getting-started
+            http://moz.com/blog/meta-data-templates-123
+        *@
+        @*
+            TODO: Structured Data - Metadata for HTML e.g. Book, Location etc.
+            schema.org - Schema database
+            http://schema.org
+            Schema Creator - Create HTML schemas
+            http://schema-creator.org/
+            Structured Data Testing Tool - Test HTML schemas
+            http://www.google.com/webmasters/tools/richsnippets
+        *@
 
     </head>
     <body>
@@ -94,17 +94,17 @@
                         <li>@Html.ActionLink("Sobre nós", "About", "Home", routeValues: null, htmlAttributes: new { id = "AboutLink" })</li>
                         <li>@Html.ActionLink("Soluções", "Solutions", "Home", routeValues: null, htmlAttributes: new { id = "SolutionsLink" })</li>
                         <li>@Html.ActionLink("Contactos", "Contact", "Home", routeValues: null, htmlAttributes: new { id = "ContactLink" })</li>
-                        
+
                         @Html.Partial("_LoginPartial")
                     </ul>
                     @*<form action="@Url.RouteUrl(HomeControllerRoute.GetSearch)" class="navbar-form navbar-right" method="get" role="search">
-                        <div class="input-group">
-                            <input aria-label="Search" class="form-control" maxlength="2048" name="query" placeholder="Search" title="Search" type="text">
-                            <div class="input-group-btn">
-                                <button aria-label="Search" class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                            <div class="input-group">
+                                <input aria-label="Search" class="form-control" maxlength="2048" name="query" placeholder="Search" title="Search" type="text">
+                                <div class="input-group-btn">
+                                    <button aria-label="Search" class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                                </div>
                             </div>
-                        </div>
-                    </form>*@
+                        </form>*@
                 </div>
             </div>
         </nav>
@@ -116,9 +116,9 @@
                 </div>
             <![endif]-->
             @RenderBody()
-            
+
             @*<hr>*@
-            
+
             <!-- SEP -->
             <div class="page-sep black_deg">
                 <div class="container container_padding">
@@ -178,5 +178,5 @@
         </script>
 
         @RenderSection("scripts", required: false)
-        </body>
+    </body>
 </html>

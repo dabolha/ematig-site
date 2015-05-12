@@ -16,7 +16,7 @@ namespace Ematig_Portal.Models.Data
     {
         public AspNetUsers()
         {
-            this.AspNetUserClaims = new HashSet<AspNetUserClaims>(); 
+            this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
             this.User = new HashSet<User>();

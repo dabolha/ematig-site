@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ematig_Portal.Models
@@ -26,6 +27,10 @@ namespace Ematig_Portal.Models
         public string PhoneNumber { get; set; }
 
         [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Assunto")]
+        public string Title { get; set; }
+
         [DataType(DataType.Text)]
         [Display(Name = "Mensagem")]
         public string Message { get; set; }

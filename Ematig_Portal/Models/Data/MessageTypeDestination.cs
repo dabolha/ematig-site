@@ -13,7 +13,7 @@ namespace Ematig_Portal.Models.Data
     using System.Collections.Generic;
     
     public partial class MessageTypeDestination
-    { 
+    {
         public int Id { get; set; }
         public short MessageTypeId { get; set; }
         public string ToEmail { get; set; }

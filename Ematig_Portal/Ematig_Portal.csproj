@@ -232,10 +232,14 @@
     <Compile Include="Constants\ErrorController\ErrorControllerRoute.cs" />
     <Compile Include="Constants\HomeController\HomeControllerAction.cs" />
     <Compile Include="Constants\HomeController\HomeControllerRoute.cs" />
+    <Compile Include="Constants\MessageTypeTemplate.cs" />
+    <Compile Include="Constants\SettingKey.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Framework\CspViolationException.cs" />
     <Compile Include="Framework\SitemapFrequency.cs" />
     <Compile Include="Framework\SitemapNode.cs" />
@@ -261,6 +265,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\MessageTypeEnum.cs" />
+    <Compile Include="Helpers\ResultMessageType.cs" />
+    <Compile Include="Helpers\Alert.cs" />
     <Compile Include="Models\Data\AspNetRoles.cs">
       <DependentUpon>EmatigBD.tt</DependentUpon>
     </Compile>
@@ -304,6 +311,9 @@
     <Compile Include="Models\Data\MessageTypeMessageChannel.cs">
       <DependentUpon>EmatigBD.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Data\Settings.cs">
+      <DependentUpon>EmatigBD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data\User.cs">
       <DependentUpon>EmatigBD.tt</DependentUpon>
     </Compile>
@@ -311,6 +321,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Data\Identity\IdentityModels.cs" />
+    <Compile Include="Models\SettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Logging\ILoggingService.cs" />
     <Compile Include="Services\Logging\LoggingService.cs" />
@@ -609,7 +620,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -629,6 +639,15 @@
     <Content Include="Views\Account\All.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Views\Shared\_Alerts.cshtml" />
+    <Content Include="Views\Shared\Layout\_PartialLayout.cshtml" />
+    <Content Include="Views\Shared\Layout\_MainLayout.cshtml" />
+    <Content Include="Views\Account\_ViewStart.cshtml" />
+    <Content Include="Views\Home\_ViewStart.cshtml" />
+    <Content Include="Views\Message\_ViewStart.cshtml" />
+    <Content Include="Views\Error\_ViewStart.cshtml" />
+    <Content Include="Views\Settings\All.cshtml" />
+    <Content Include="Views\Settings\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

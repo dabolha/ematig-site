@@ -13,19 +13,19 @@ namespace Ematig_Portal.Models.Data
     using System.Collections.Generic;
     
     public partial class MessageType
-    { 
+    {
         public MessageType()
         {
+            this.Message = new HashSet<Message>();
             this.MessageTypeDestination = new HashSet<MessageTypeDestination>();
             this.MessageTypeMessageChannel = new HashSet<MessageTypeMessageChannel>();
-            this.Message = new HashSet<Message>();
         }
     
         public short Id { get; set; }
         public string Name { get; set; }
     
+        public virtual ICollection<Message> Message { get; set; }
         public virtual ICollection<MessageTypeDestination> MessageTypeDestination { get; set; }
         public virtual ICollection<MessageTypeMessageChannel> MessageTypeMessageChannel { get; set; }
-        public virtual ICollection<Message> Message { get; set; }
     }
 }

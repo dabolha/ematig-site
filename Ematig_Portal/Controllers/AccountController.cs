@@ -11,11 +11,12 @@ using Microsoft.Owin.Security;
 using Ematig_Portal.Models;
 using System.Data.Entity;
 using Ematig_Portal.Models.Data;
+using Ematig_Portal.Helpers;
 
 namespace Ematig_Portal.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         #region Properties
 
@@ -39,17 +40,6 @@ namespace Ematig_Portal.Controllers
         #endregion
 
         #region Constructor
-
-        //public AccountController()
-        //    : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new UserIdentityDbContext())))
-        //{
-        //    this._BbContext = new EmatigBbContext();
-        //}
-
-        //public AccountController(UserManager<ApplicationUser> userManager)
-        //{
-        //    this._UserIdentityManager = userManager;
-        //}
 
         public AccountController()
         {
@@ -84,7 +74,7 @@ namespace Ematig_Portal.Controllers
                 var identityUser = await this._UserIdentityManager.FindAsync(model.Email, model.Password);
                 if (identityUser == null)
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    Error(ProcessResultMessage(ResultMessageType.InvalidCredentials));
                     return View(model);
                 }
 
@@ -93,7 +83,7 @@ namespace Ematig_Portal.Controllers
                     var user = context.User.FirstOrDefault(item => item.AuthId == identityUser.Id);
                     if (user == null)
                     {
-                        ModelState.AddModelError("", "Invalid username or password.");
+                        Error(ProcessResultMessage(ResultMessageType.InvalidCredentials));
                         return View(model);
                     }
 
@@ -102,7 +92,6 @@ namespace Ematig_Portal.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -138,7 +127,7 @@ namespace Ematig_Portal.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //TODO: error
+                Error(ProcessResultMessage(ResultMessageType.Error));
                 return View(model);
             }
             var identityUser = new ApplicationUser()
@@ -146,10 +135,11 @@ namespace Ematig_Portal.Controllers
                 UserName = model.Email
                 //Email = model.Email,
             };
+
             var result = await this._UserIdentityManager.CreateAsync(identityUser, model.Password);
             if (! result.Succeeded)
             {
-                AddErrors(result);
+                Error(ProcessResultMessage(ResultMessageType.Error));
             }
 
             using (var context = this._BbContext)
@@ -174,16 +164,15 @@ namespace Ematig_Portal.Controllers
 
                 if (context.SaveChanges() > 0)
                 {
-                    //await SignInAsync(identityUser, user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    Success(ProcessResultMessage(ResultMessageType.RegisterUserSuccess), true);
+                    return RedirectToAction("All");
                 }
                 else
                 {
-                    AddErrors(result);
+                    Error(ProcessResultMessage(ResultMessageType.Error));
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -195,12 +184,6 @@ namespace Ematig_Portal.Controllers
         // GET: /Account/Manage/id
         public ActionResult Manage(long? id)
         {
-            //ViewBag.StatusMessage =
-            //    message == ManageMessageId.ChangeInfoSuccess ? "Your information has been changed."
-            //    : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-            //    : message == ManageMessageId.Error ? "An error has occurred."
-            //    : "";
-
             ViewBag.ReturnUrl = Url.Action("All");
 
             string authId = User.Identity.GetUserId();
@@ -219,7 +202,7 @@ namespace Ematig_Portal.Controllers
 
                 if (user == null)
                 {
-                    //TODO: error 
+                    Error(ProcessResultMessage(ResultMessageType.Error));
                     return View();
                 }
 
@@ -259,8 +242,7 @@ namespace Ematig_Portal.Controllers
                     var user = context.User.FirstOrDefault(item => item.Id == model.Id);
                     if (user == null)
                     {
-                        //TODO: error
-                        ModelState.AddModelError("", "Invalid user.");
+                        Error(ProcessResultMessage(ResultMessageType.InvalidUser));
                         return View(model);
                     }
 
@@ -284,8 +266,7 @@ namespace Ematig_Portal.Controllers
 
                     if (context.SaveChanges() <= 0)
                     {
-                        //TODO: error
-                        ModelState.AddModelError("", "Invalid user.");
+                        Error(ProcessResultMessage(ResultMessageType.InvalidUser));
                         return View(model);
                     }
                 }
@@ -300,8 +281,7 @@ namespace Ematig_Portal.Controllers
                         var identityUser = context.Users.FirstOrDefault(item => item.Id == model.AuthId);
                         if (identityUser == null)
                         {
-                            //TODO: error
-                            ModelState.AddModelError("", "Invalid user.");
+                            Error(ProcessResultMessage(ResultMessageType.InvalidUser));
                             return View(model);
                         }
 
@@ -309,8 +289,7 @@ namespace Ematig_Portal.Controllers
 
                         if (context.SaveChanges() <= 0)
                         {
-                            //TODO: error
-                            ModelState.AddModelError("", "Invalid user.");
+                            Error(ProcessResultMessage(ResultMessageType.InvalidUser));
                             return View(model);
                         }
                     }
@@ -325,13 +304,14 @@ namespace Ematig_Portal.Controllers
                         IdentityResult result = await this._UserIdentityManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                         if (!result.Succeeded)
                         {
-                            AddErrors(result);
+                            Error(ProcessResultMessage(ResultMessageType.Error));
                         }
                     }
                 }
                 #endregion
 
-                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
+                Success(ProcessResultMessage(ResultMessageType.ChangeInfoSuccess), true);
+                return RedirectToAction("All");
 
                 
             }
@@ -384,17 +364,17 @@ namespace Ematig_Portal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            ManageMessageId? message = null;
+            ResultMessageType? message = null;
             IdentityResult result = await this._UserIdentityManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
-                message = ManageMessageId.RemoveLoginSuccess;
+                message = ResultMessageType.RemoveLoginSuccess;
             }
             else
             {
-                message = ManageMessageId.Error;
+                message = ResultMessageType.Error;
             }
-            return RedirectToAction("Manage", new { Message = message });
+            return RedirectToAction("Manage", new { Message = ProcessResultMessage(message) });
         }
 
         //
@@ -414,14 +394,14 @@ namespace Ematig_Portal.Controllers
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
-                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+                return RedirectToAction("Manage", new { Message = ProcessResultMessage(ResultMessageType.Error) });
             }
             var result = await this._UserIdentityManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage");
             }
-            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            return RedirectToAction("Manage", new { Message = ProcessResultMessage(ResultMessageType.Error) });
         }
 
         [ChildActionOnly]
@@ -442,7 +422,6 @@ namespace Ematig_Portal.Controllers
             base.Dispose(disposing);
         }
 
-        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -469,14 +448,6 @@ namespace Ematig_Portal.Controllers
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
-            }
-        }
-
         private bool HasPassword()
         {
             var user = this._UserIdentityManager.FindById(User.Identity.GetUserId());
@@ -485,25 +456,6 @@ namespace Ematig_Portal.Controllers
                 return user.PasswordHash != null;
             }
             return false;
-        }
-
-        public enum ManageMessageId
-        {
-            ChangeInfoSuccess,
-            RemoveLoginSuccess,
-            Error
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
         }
 
         private class ChallengeResult : HttpUnauthorizedResult
@@ -533,6 +485,5 @@ namespace Ematig_Portal.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
     }
 }

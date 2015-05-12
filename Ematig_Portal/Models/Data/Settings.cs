@@ -12,16 +12,10 @@ namespace Ematig_Portal.Models.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class MessageChannel
+    public partial class Settings
     {
-        public MessageChannel()
-        {
-            this.MessageTypeMessageChannel = new HashSet<MessageTypeMessageChannel>();
-        }
-    
-        public short Id { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
         public string Name { get; set; }
-    
-        public virtual ICollection<MessageTypeMessageChannel> MessageTypeMessageChannel { get; set; }
     }
 }

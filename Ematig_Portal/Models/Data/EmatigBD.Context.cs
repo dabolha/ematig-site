@@ -28,12 +28,13 @@ namespace Ematig_Portal.Models.Data
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Message> Message { get; set; }
         public virtual DbSet<MessageChannel> MessageChannel { get; set; }
         public virtual DbSet<MessageType> MessageType { get; set; }
         public virtual DbSet<MessageTypeDestination> MessageTypeDestination { get; set; }
         public virtual DbSet<MessageTypeMessageChannel> MessageTypeMessageChannel { get; set; }
-        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Message> Message { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Settings> Settings { get; set; }
     }
 }

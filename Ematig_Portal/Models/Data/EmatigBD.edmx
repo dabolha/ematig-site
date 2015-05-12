@@ -87,11 +87,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MessageTypeId" Type="smallint" Nullable="false" />
           <Property Name="ToEmail" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Body" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="128" />
+          <Property Name="Body" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="MessageTypeMessageChannel">
           <Key>
@@ -102,6 +102,14 @@
           <Property Name="MessageChannelId" Type="smallint" Nullable="false" />
           <Property Name="Subject" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Body" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -248,6 +256,7 @@
           <EntitySet Name="MessageType" EntityType="Self.MessageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MessageTypeDestination" EntityType="Self.MessageTypeDestination" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MessageTypeMessageChannel" EntityType="Self.MessageTypeMessageChannel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -319,103 +328,10 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="EmatigBDModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
-        <EntityType Name="MessageChannel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int16" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MessageTypeMessageChannel" Relationship="Self.FK_MessageTypeMessageChannel_MessageChannel" FromRole="MessageChannel" ToRole="MessageTypeMessageChannel" />
-        </EntityType>
-        <EntityType Name="MessageType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int16" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MessageTypeDestination" Relationship="Self.FK_MessageTypeDestination_MessageType" FromRole="MessageType" ToRole="MessageTypeDestination" />
-          <NavigationProperty Name="MessageTypeMessageChannel" Relationship="Self.FK_MessageTypeMessageChannel_MessageType" FromRole="MessageType" ToRole="MessageTypeMessageChannel" />
-          <NavigationProperty Name="Message" Relationship="EmatigBDModel.FK_Message_MessageType" FromRole="MessageType" ToRole="Message" />
-        </EntityType>
-        <EntityType Name="MessageTypeDestination">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
-          <Property Name="ToEmail" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Subject" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MessageType" Relationship="Self.FK_MessageTypeDestination_MessageType" FromRole="MessageTypeDestination" ToRole="MessageType" />
-        </EntityType>
-        <EntityType Name="MessageTypeMessageChannel">
-          <Key>
-            <PropertyRef Name="MessageTypeId" />
-            <PropertyRef Name="MessageChannelId" />
-          </Key>
-          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
-          <Property Name="MessageChannelId" Type="Int16" Nullable="false" />
-          <Property Name="Subject" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MessageChannel" Relationship="Self.FK_MessageTypeMessageChannel_MessageChannel" FromRole="MessageTypeMessageChannel" ToRole="MessageChannel" />
-          <NavigationProperty Name="MessageType" Relationship="Self.FK_MessageTypeMessageChannel_MessageType" FromRole="MessageTypeMessageChannel" ToRole="MessageType" />
-        </EntityType>
-        <Association Name="FK_MessageTypeMessageChannel_MessageChannel">
-          <End Role="MessageChannel" Type="Self.MessageChannel" Multiplicity="1" />
-          <End Role="MessageTypeMessageChannel" Type="Self.MessageTypeMessageChannel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageChannel">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MessageTypeMessageChannel">
-              <PropertyRef Name="MessageChannelId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageTypeDestination_MessageType">
-          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
-          <End Role="MessageTypeDestination" Type="Self.MessageTypeDestination" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MessageTypeDestination">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MessageTypeMessageChannel_MessageType">
-          <End Role="MessageType" Type="Self.MessageType" Multiplicity="1" />
-          <End Role="MessageTypeMessageChannel" Type="Self.MessageTypeMessageChannel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MessageType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MessageTypeMessageChannel">
-              <PropertyRef Name="MessageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="EmatigBbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
-          <EntitySet Name="MessageChannel" EntityType="Self.MessageChannel" />
-          <EntitySet Name="MessageType" EntityType="Self.MessageType" />
-          <EntitySet Name="MessageTypeDestination" EntityType="Self.MessageTypeDestination" />
-          <EntitySet Name="MessageTypeMessageChannel" EntityType="Self.MessageTypeMessageChannel" />
-          <AssociationSet Name="FK_MessageTypeMessageChannel_MessageChannel" Association="Self.FK_MessageTypeMessageChannel_MessageChannel">
-            <End Role="MessageChannel" EntitySet="MessageChannel" />
-            <End Role="MessageTypeMessageChannel" EntitySet="MessageTypeMessageChannel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageTypeDestination_MessageType" Association="Self.FK_MessageTypeDestination_MessageType">
-            <End Role="MessageType" EntitySet="MessageType" />
-            <End Role="MessageTypeDestination" EntitySet="MessageTypeDestination" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MessageTypeMessageChannel_MessageType" Association="Self.FK_MessageTypeMessageChannel_MessageType">
-            <End Role="MessageType" EntitySet="MessageType" />
-            <End Role="MessageTypeMessageChannel" EntitySet="MessageTypeMessageChannel" />
-          </AssociationSet>
           <EntitySet Name="AspNetUsers" EntityType="EmatigBDModel.AspNetUsers" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="EmatigBDModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -429,15 +345,32 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="Message" EntityType="EmatigBDModel.Message" />
           <EntitySet Name="User" EntityType="EmatigBDModel.User" />
           <AssociationSet Name="FK_User_ToTable" Association="EmatigBDModel.FK_User_ToTable">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <EntitySet Name="Message" EntityType="EmatigBDModel.Message" />
+          <EntitySet Name="MessageChannel" EntityType="EmatigBDModel.MessageChannel" />
+          <EntitySet Name="MessageType" EntityType="EmatigBDModel.MessageType" />
+          <EntitySet Name="MessageTypeDestination" EntityType="EmatigBDModel.MessageTypeDestination" />
+          <EntitySet Name="MessageTypeMessageChannel" EntityType="EmatigBDModel.MessageTypeMessageChannel" />
+          <EntitySet Name="Settings" EntityType="EmatigBDModel.Settings" />
           <AssociationSet Name="FK_Message_MessageType" Association="EmatigBDModel.FK_Message_MessageType">
             <End Role="MessageType" EntitySet="MessageType" />
             <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageTypeMessageChannel_MessageChannel" Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageChannel">
+            <End Role="MessageChannel" EntitySet="MessageChannel" />
+            <End Role="MessageTypeMessageChannel" EntitySet="MessageTypeMessageChannel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageTypeDestination_MessageType" Association="EmatigBDModel.FK_MessageTypeDestination_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageTypeDestination" EntitySet="MessageTypeDestination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MessageTypeMessageChannel_MessageType" Association="EmatigBDModel.FK_MessageTypeMessageChannel_MessageType">
+            <End Role="MessageType" EntitySet="MessageType" />
+            <End Role="MessageTypeMessageChannel" EntitySet="MessageTypeMessageChannel" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetUsers">
@@ -493,20 +426,6 @@
           <End Type="EmatigBDModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
           <End Type="EmatigBDModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FromEmail" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ToEmail" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
-          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SentDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="MessageType" Relationship="EmatigBDModel.FK_Message_MessageType" FromRole="Message" ToRole="MessageType" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -538,6 +457,69 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromEmail" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ToEmail" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SentDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MessageType" Relationship="EmatigBDModel.FK_Message_MessageType" FromRole="Message" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageChannel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageTypeMessageChannel" Relationship="EmatigBDModel.FK_MessageTypeMessageChannel_MessageChannel" FromRole="MessageChannel" ToRole="MessageTypeMessageChannel" />
+        </EntityType>
+        <EntityType Name="MessageType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Message" Relationship="EmatigBDModel.FK_Message_MessageType" FromRole="MessageType" ToRole="Message" />
+          <NavigationProperty Name="MessageTypeDestination" Relationship="EmatigBDModel.FK_MessageTypeDestination_MessageType" FromRole="MessageType" ToRole="MessageTypeDestination" />
+          <NavigationProperty Name="MessageTypeMessageChannel" Relationship="EmatigBDModel.FK_MessageTypeMessageChannel_MessageType" FromRole="MessageType" ToRole="MessageTypeMessageChannel" />
+        </EntityType>
+        <EntityType Name="MessageTypeDestination">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
+          <Property Name="ToEmail" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageType" Relationship="EmatigBDModel.FK_MessageTypeDestination_MessageType" FromRole="MessageTypeDestination" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="MessageTypeMessageChannel">
+          <Key>
+            <PropertyRef Name="MessageTypeId" />
+            <PropertyRef Name="MessageChannelId" />
+          </Key>
+          <Property Name="MessageTypeId" Type="Int16" Nullable="false" />
+          <Property Name="MessageChannelId" Type="Int16" Nullable="false" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MessageChannel" Relationship="EmatigBDModel.FK_MessageTypeMessageChannel_MessageChannel" FromRole="MessageTypeMessageChannel" ToRole="MessageChannel" />
+          <NavigationProperty Name="MessageType" Relationship="EmatigBDModel.FK_MessageTypeMessageChannel_MessageType" FromRole="MessageTypeMessageChannel" ToRole="MessageType" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
         <Association Name="FK_Message_MessageType">
           <End Type="EmatigBDModel.MessageType" Role="MessageType" Multiplicity="1" />
           <End Type="EmatigBDModel.Message" Role="Message" Multiplicity="*" />
@@ -546,6 +528,42 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Message">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageTypeMessageChannel_MessageChannel">
+          <End Type="EmatigBDModel.MessageChannel" Role="MessageChannel" Multiplicity="1" />
+          <End Type="EmatigBDModel.MessageTypeMessageChannel" Role="MessageTypeMessageChannel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageChannel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageTypeMessageChannel">
+              <PropertyRef Name="MessageChannelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageTypeDestination_MessageType">
+          <End Type="EmatigBDModel.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="EmatigBDModel.MessageTypeDestination" Role="MessageTypeDestination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageTypeDestination">
+              <PropertyRef Name="MessageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MessageTypeMessageChannel_MessageType">
+          <End Type="EmatigBDModel.MessageType" Role="MessageType" Multiplicity="1" />
+          <End Type="EmatigBDModel.MessageTypeMessageChannel" Role="MessageTypeMessageChannel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MessageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageTypeMessageChannel">
               <PropertyRef Name="MessageTypeId" />
             </Dependent>
           </ReferentialConstraint>
@@ -583,43 +601,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MessageChannel">
-            <EntityTypeMapping TypeName="EmatigBDModel.MessageChannel">
-              <MappingFragment StoreEntitySet="MessageChannel">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MessageType">
-            <EntityTypeMapping TypeName="EmatigBDModel.MessageType">
-              <MappingFragment StoreEntitySet="MessageType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MessageTypeDestination">
-            <EntityTypeMapping TypeName="EmatigBDModel.MessageTypeDestination">
-              <MappingFragment StoreEntitySet="MessageTypeDestination">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MessageTypeMessageChannel">
-            <EntityTypeMapping TypeName="EmatigBDModel.MessageTypeMessageChannel">
-              <MappingFragment StoreEntitySet="MessageTypeMessageChannel">
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="MessageChannelId" ColumnName="MessageChannelId" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="EmatigBDModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
@@ -646,20 +627,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Message">
-            <EntityTypeMapping TypeName="EmatigBDModel.Message">
-              <MappingFragment StoreEntitySet="Message">
-                <ScalarProperty Name="SentDate" ColumnName="SentDate" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
-                <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="EmatigBDModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -676,6 +643,66 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="AuthId" ColumnName="AuthId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Message">
+            <EntityTypeMapping TypeName="EmatigBDModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="SentDate" ColumnName="SentDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
+                <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageChannel">
+            <EntityTypeMapping TypeName="EmatigBDModel.MessageChannel">
+              <MappingFragment StoreEntitySet="MessageChannel">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageType">
+            <EntityTypeMapping TypeName="EmatigBDModel.MessageType">
+              <MappingFragment StoreEntitySet="MessageType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageTypeDestination">
+            <EntityTypeMapping TypeName="EmatigBDModel.MessageTypeDestination">
+              <MappingFragment StoreEntitySet="MessageTypeDestination">
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ToEmail" ColumnName="ToEmail" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageTypeMessageChannel">
+            <EntityTypeMapping TypeName="EmatigBDModel.MessageTypeMessageChannel">
+              <MappingFragment StoreEntitySet="MessageTypeMessageChannel">
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="MessageChannelId" ColumnName="MessageChannelId" />
+                <ScalarProperty Name="MessageTypeId" ColumnName="MessageTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="EmatigBDModel.Settings">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
