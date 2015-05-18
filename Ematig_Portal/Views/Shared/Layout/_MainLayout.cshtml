@@ -37,6 +37,11 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryvalunobtrusive")
+
     @* Google Maps *@
     @Styles.Render("http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic")
     @Scripts.Render("https://maps.googleapis.com/maps/api/js")
@@ -133,9 +138,6 @@
             </footer>
         </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/jqueryvalunobtrusive")
         @Scripts.Render("~/bundles/bootstrap")
         @* Render failover scripts. If a Content Delivery Network (CDN) fails, load a local copy.
             If you trust the CDN to be available 100% of the time and you prefer better performance
@@ -146,7 +148,7 @@
           @Scripts.Render("~/bundles/respond")
           @Scripts.Render("~/bundles/failoverrespond")
         <![endif]-->
-
+        @Scripts.Render("~/bundles/custom")
         <script type="text/javascript">
             function initialize() {
                 var mapCanvas = document.getElementById('map-canvas');

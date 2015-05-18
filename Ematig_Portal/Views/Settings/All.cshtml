@@ -1,7 +1,7 @@
 ﻿@using Ematig_Portal.Models;
 @using Microsoft.AspNet.Identity;
 
-@model IEnumerable<SettingsViewModel>
+@model SettingsViewModel
 @using GridMvc.Html
 
 @{
@@ -12,13 +12,17 @@
     <div class="container container_padding box_size1">
 
         <div class="row">
-            @Html.Grid(Model).Columns(columns =>
+            @Html.Grid(Model.SettingList).Columns(columns =>
                     {
                         columns.Add()
                                 .Encoded(false)
                                 .Sanitized(false)
                                 .SetWidth(10)
-                                .RenderValueAs(c => @<b><a href="@Url.Action("Edit", "Settings", new { id = c.Key })"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a></b>);
+                                .RenderValueAs(c => 
+                                    @<b>
+                                         <a href="@Url.Action("Edit", "Settings", new { key = c.Key })" class="modal-link"><span aria-hidden="true" class="modal-link fa fa-pencil-square-o"></span></a>
+                                     </b>
+                                );
                         columns.Add(c => c.Name).Titled("Nome").Sortable(true);
                         columns.Add(c => c.Key).Titled("Chave").Sortable(true);
                         columns.Add(c => c.Value).Titled("Valor");
@@ -30,3 +34,8 @@
         </div>
     </div>
 </section>
+
+
+<div class='modal hide fade in'>
+    <div class="modal-lg modal-content"></div>
+</div>

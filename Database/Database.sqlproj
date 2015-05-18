@@ -80,6 +80,7 @@
     <None Include="Scripts\Post-Deployment\Data\Data.Settings.sql" />
     <None Include="Scripts\Post-Deployment\Data\Data.MessageType.sql" />
     <None Include="Scripts\Post-Deployment\Data\Data.MessageChannel.sql" />
+    <None Include="Scripts\Post-Deployment\Data\Data.MessageTypeDestination.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

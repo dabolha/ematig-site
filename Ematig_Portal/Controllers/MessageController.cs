@@ -46,34 +46,34 @@ namespace Ematig_Portal.Controllers
             if (!ModelState.IsValid)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
-                return PartialView("_SendMessage", model);
-            }
-
-            Message message = ProcessMessage(model);
-            if (message == null)
-            {
-                Error(ProcessResultMessage(ResultMessageType.Error));
-                return PartialView("_SendMessage", model);
+                return RedirectToAction("Contact", "Home");
             }
 
             using (var context = this._BbContext)
             {
+                Message message = ProcessMessage(context, model);
+                if (message == null)
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                    return RedirectToAction("Contact", "Home");
+                }
+
                 context.Message.Add(message);
 
                 if (context.SaveChanges() == 0)
                 {
                     Error(ProcessResultMessage(ResultMessageType.Error));
-                    return PartialView("_SendMessage", model);
+                    return RedirectToAction("Contact", "Home");
                 }
 
                 Success(ProcessResultMessage(ResultMessageType.SentMessageSuccess));
-                return PartialView("_SendMessage");
+                return RedirectToAction("Contact", "Home");
             }
         }
 
-        private Message ProcessMessage(SendMessageViewModel model)
+        private Message ProcessMessage(EmatigBbContext context, SendMessageViewModel model)
         {
-            MessageTypeDestination messageTypeDestination = GetMessageDestination(MessageTypeEnum.ContactRequest);
+            MessageTypeDestination messageTypeDestination = GetMessageDestination(context, MessageTypeEnum.ContactRequest);
             if (messageTypeDestination == null)
             {
                 return null;
@@ -92,12 +92,16 @@ namespace Ematig_Portal.Controllers
 
         private string GetMessageFromEmail()
         {
-            throw new NotImplementedException();
+            Settings settings = new SettingsController().Get(SettingKey.EmailFrom);
+            return settings == null ? string.Empty : settings.Value;
         }
 
-        private MessageTypeDestination GetMessageDestination(MessageTypeEnum messageTypeEnum)
+        private MessageTypeDestination GetMessageDestination(EmatigBbContext context, MessageTypeEnum messageTypeEnum)
         {
-            throw new NotImplementedException();
+            int messageType = (int)messageTypeEnum;
+         
+            return context.MessageTypeDestination
+                .FirstOrDefault(item => item.MessageTypeId == messageType);
         }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Ematig_Portal.Models;
+﻿using Ematig_Portal.Helpers;
+using Ematig_Portal.Models;
 using Ematig_Portal.Models.Data;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Ematig_Portal.Controllers
 {
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
         #region Properties
 
@@ -39,8 +40,10 @@ namespace Ematig_Portal.Controllers
                     return View();
                 }
 
-                IEnumerable<SettingsViewModel> list = settingsList
-                    .Select(item => new SettingsViewModel()
+                SettingsViewModel settingsModel = new SettingsViewModel();
+
+                settingsModel.SettingList = settingsList
+                    .Select(item => new SettingsModel()
                     {
                         Key = item.Key,
                         Name = item.Name,
@@ -48,17 +51,50 @@ namespace Ematig_Portal.Controllers
                     })
                     .ToList();
 
-                return View(list);
+                return View(settingsModel);
             }
         }
+
+        public Settings Get(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                return null;
+
+            using (var context = this._BbContext)
+            {
+                return context.Settings
+                    .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (key ?? "").Trim().ToLower());
+            }
+        }
+
 
         #endregion
 
         //
-        // GET: /Settings/Edit
+        // GET: /Settings/Edit/key
         public ActionResult Edit(string key)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(key)) 
+                return PartialView("_Edit");
+
+            using (var context = this._BbContext)
+            {
+                var setting = context.Settings
+                    .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (key ?? "").Trim().ToLower());
+                
+                if (setting == null)
+                    return PartialView("_Edit");
+
+                SettingsViewModel settingsModel = new SettingsViewModel();
+                settingsModel.Setting = new SettingsModel()
+                {
+                    Key = setting.Key,
+                    Name = setting.Name,
+                    Value = setting.Value
+                };
+
+                return PartialView("_Edit", settingsModel);
+            }
         }
 
         //
@@ -67,7 +103,35 @@ namespace Ematig_Portal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SettingsViewModel model)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid 
+                || model == null 
+                || model.Setting == null 
+                || string.IsNullOrEmpty(model.Setting.Key) 
+                || string.IsNullOrEmpty(model.Setting.Value))
+            {
+                Error(ProcessResultMessage(ResultMessageType.Error));
+                return RedirectToAction("All");
+            }
+
+            using (var context = this._BbContext)
+            {
+                var setting = context.Settings
+                    .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (model.Setting.Key ?? "").Trim().ToLower());
+
+                setting.Value = model.Setting.Value;
+
+                if (context.SaveChanges() > 0)
+                {
+                    Success(ProcessResultMessage(ResultMessageType.OperationSuccess), true);
+                    return RedirectToAction("All");
+                }
+                else
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                }
+            }
+
+            return RedirectToAction("All");
         }
 
 	}

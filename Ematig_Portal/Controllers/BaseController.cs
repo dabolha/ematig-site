@@ -32,7 +32,8 @@ namespace Ematig_Portal.Controllers
 
         protected string ProcessResultMessage(ResultMessageType? resultMessageType)
         {
-            return resultMessageType == ResultMessageType.SentMessageSuccess ? "Your message has been sent."
+            return resultMessageType == ResultMessageType.OperationSuccess ? "Operação realizada com sucesso."
+                    : resultMessageType == ResultMessageType.SentMessageSuccess ? "Your message has been sent."
                     : resultMessageType == ResultMessageType.ChangeInfoSuccess ? "Your information has been changed."
                     : resultMessageType == ResultMessageType.RemoveLoginSuccess ? "The external login was removed."
                     : resultMessageType == ResultMessageType.InvalidCredentials ? "Invalid username or password."

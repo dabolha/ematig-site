@@ -1,0 +1,40 @@
+﻿@using Ematig_Portal.Models;
+@model SettingsViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Editar</h3>
+</div>
+
+@using (Html.BeginForm("Edit", "Settings", FormMethod.Post, new { id = "settingsForm", @class = "form-horizontal modal-form" }))
+{
+    @Html.ValidationSummary()
+
+    @Html.AntiForgeryToken();
+
+    <div class="modal-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Setting.Key, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Setting.Key, new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Setting.Value, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Setting.Value, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Setting.Value)
+                        </div>
+                    </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn-toolbar">
+            <button class="btn btn-info pull-right" type="submit">Gravar</button>
+            <button class="btn btn-info-inv pull-right close-modal" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+        </div>
+    </div>
+
+}

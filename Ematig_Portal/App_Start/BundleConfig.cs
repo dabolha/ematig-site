@@ -57,17 +57,21 @@
         private static void AddJavaScript(BundleCollection bundles)
         {
             // jQuery - The JavaScript helper API (http://jquery.com/).
-            Bundle jqueryBundle = new ScriptBundle("~/bundles/jquery", ContentDeliveryNetwork.Google.JQueryUrl)
+            Bundle jqueryBundle = new ScriptBundle("~/bundles/jquery")
                 .Include("~/Scripts/jquery-{version}.js");
             bundles.Add(jqueryBundle);
 
+            Bundle jqueryUIBundle = new ScriptBundle("~/bundles/jqueryui")
+              .Include("~/Scripts/jquery-ui-{version}.js");
+            bundles.Add(jqueryUIBundle);
+
             // jQuery Validate - Client side JavaScript form validation (http://jqueryvalidation.org/).
-            Bundle jqueryValidateBundle = new ScriptBundle("~/bundles/jqueryval", ContentDeliveryNetwork.Microsoft.JQueryValidateUrl)
+            Bundle jqueryValidateBundle = new ScriptBundle("~/bundles/jqueryval")
                 .Include("~/Scripts/jquery.validate*");
             bundles.Add(jqueryValidateBundle);
-
+             
             // Microsoft jQuery Validate Unobtrusive - Validation using HTML data- attributes (http://stackoverflow.com/questions/11534910/what-is-jquery-unobtrusive-validation)
-            Bundle jqueryValidateUnobtrusiveBundle = new ScriptBundle("~/bundles/jqueryvalunobtrusive", ContentDeliveryNetwork.Microsoft.JQueryValidateUnobtrusiveUrl)
+            Bundle jqueryValidateUnobtrusiveBundle = new ScriptBundle("~/bundles/jqueryvalunobtrusive")
                 .Include("~/Scripts/jquery.validate*");
             bundles.Add(jqueryValidateUnobtrusiveBundle);
 
@@ -95,8 +99,6 @@
                 .Include("~/Scripts/respond.js");
             bundles.Add(respondBundle);
 
-
-
             // Failover Core - If the CDN's fail then these scripts load local copies of the same scripts.
             Bundle failoverCoreBundle = new ScriptBundle("~/bundles/failovercore")
                 .Include("~/Scripts/Failover/jquery.js")
@@ -110,6 +112,10 @@
             Bundle failoverRespondBundle = new ScriptBundle("~/bundles/failoverrespond")
                 .Include("~/Scripts/Failover/respond.js");
             bundles.Add(failoverRespondBundle);
+
+            Bundle custom = new ScriptBundle("~/bundles/custom")
+               .Include("~/Scripts/Modal.js");
+            bundles.Add(custom);
         }
     }
 }

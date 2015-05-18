@@ -17,3 +17,4 @@ Post-Deployment Script Template
 :r .\Data\Data.Settings.sql
 :r .\Data\Data.MessageType.sql
 :r .\Data\Data.MessageChannel.sql
+:r .\Data\Data.MessageTypeDestination.sql

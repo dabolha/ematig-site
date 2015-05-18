@@ -125,7 +125,7 @@ namespace Ematig_Portal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
                 return View(model);

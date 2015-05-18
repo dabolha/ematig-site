@@ -8,6 +8,13 @@ namespace Ematig_Portal.Models
 {
     public class SettingsViewModel
     {
+        public IEnumerable<SettingsModel> SettingList { get; set; }
+
+        public SettingsModel Setting { get; set; }
+    }
+
+    public class SettingsModel
+    {
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Chave")]
@@ -18,7 +25,6 @@ namespace Ematig_Portal.Models
         [Display(Name = "Valor")]
         public string Value { get; set; }
 
-        [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Descrição")]
         public string Name { get; set; }

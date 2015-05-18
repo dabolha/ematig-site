@@ -11,6 +11,7 @@ namespace Ematig_Portal.Helpers
         ChangeInfoSuccess,
         RemoveLoginSuccess,
         RegisterUserSuccess,
+        OperationSuccess,
         Error,
         InvalidCredentials,
         InvalidUser

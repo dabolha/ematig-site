@@ -34,6 +34,11 @@
             // Enable attribute routing.
             routes.MapMvcAttributeRoutes();
 
+            routes.MapRoute(
+                "settings",
+                "settings/edit/{key}",
+                new { controller = "Settings", action = "Edit", key = "" });
+
             // Normal routes have been removed in favour of attribute routing. Here is an example of the default one.
             routes.MapRoute(
                 name: "Default",
