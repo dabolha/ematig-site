@@ -59,6 +59,8 @@ namespace Ematig_Portal.Controllers
 
         public void Error(string message, bool dismissable = true)
         {
+            LogError(message);
+
             AddAlert(AlertStyles.Danger, message, dismissable);
         }
 
@@ -76,6 +78,11 @@ namespace Ematig_Portal.Controllers
             });
 
             TempData[Alert.TempDataKey] = alerts;
+        }
+
+        public void LogError(string message)
+        {
+            Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception(message));
         }
 	}
 }

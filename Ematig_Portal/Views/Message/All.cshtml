@@ -1,18 +1,18 @@
 ﻿@using Ematig_Portal.Models;
 @using Microsoft.AspNet.Identity;
 
-@model SettingsViewModel
+@model MessageViewModel
 @using GridMvc.Html
 
 @{
-    ViewBag.Title = "Configurações gerais";
+    ViewBag.Title = "Mensagens";
 }
 
 <section class="section-intro section-login">
     <div class="container container_padding box_size1">
 
         <div class="row">
-            @Html.Grid(Model.SettingList).Columns(columns =>
+            @Html.Grid(Model.MessageList).Columns(columns =>
                     {
                         columns.Add()
                                 .Encoded(false)
@@ -20,12 +20,12 @@
                                 .SetWidth(10)
                                 .RenderValueAs(c => 
                                     @<b>
-                                         <a href="@Url.Action("Edit", "Settings", new { key = c.Key })" class="modal-link"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a>
+                                         <a href="@Url.Action("Edit", "Message", new { id = c.Id })" class="modal-link"><span aria-hidden="true" class="fa fa-search"></span></a>
                                      </b>
                                 );
-                        columns.Add(c => c.Name).Titled("Nome").Sortable(true);
-                        columns.Add(c => c.Key).Titled("Chave").Sortable(true);
-                        columns.Add(c => c.Value).Titled("Valor");
+                        columns.Add(c => c.Subject).Titled("Assunto").Sortable(true);
+                        columns.Add(c => c.CreationDate).Titled("Data");
+                        columns.Add(c => c.SentDate).Titled("Enviada");
                     }).WithPaging(20)
         </div>
         

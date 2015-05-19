@@ -70,12 +70,17 @@ namespace Ematig_Portal.Controllers
 
         #endregion
 
+        #region Edit
+
         //
         // GET: /Settings/Edit/key
         public ActionResult Edit(string key)
         {
-            if (string.IsNullOrEmpty(key)) 
-                return PartialView("_Edit");
+            if (string.IsNullOrEmpty(key))
+            {
+                Error(ProcessResultMessage(ResultMessageType.Error));
+                return RedirectToAction("All");
+            }
 
             using (var context = this._BbContext)
             {
@@ -83,7 +88,10 @@ namespace Ematig_Portal.Controllers
                     .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (key ?? "").Trim().ToLower());
                 
                 if (setting == null)
-                    return PartialView("_Edit");
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                    return RedirectToAction("All");
+                }
 
                 SettingsViewModel settingsModel = new SettingsViewModel();
                 settingsModel.Setting = new SettingsModel()
@@ -118,6 +126,12 @@ namespace Ematig_Portal.Controllers
                 var setting = context.Settings
                     .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (model.Setting.Key ?? "").Trim().ToLower());
 
+                if (setting == null)
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                    return RedirectToAction("All");
+                }
+
                 setting.Value = model.Setting.Value;
 
                 if (context.SaveChanges() > 0)
@@ -134,5 +148,6 @@ namespace Ematig_Portal.Controllers
             return RedirectToAction("All");
         }
 
-	}
+        #endregion
+    }
 }

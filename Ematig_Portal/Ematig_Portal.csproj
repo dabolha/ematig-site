@@ -668,8 +668,8 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Account\_ChangeInfoPartial.cshtml" />
-    <Content Include="Views\Message\_SendMessage.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Message\_Send.cshtml" />
     <Content Include="Views\Account\All.cshtml" />
     <Content Include="Views\Shared\_GridPager.cshtml" />
     <Content Include="Views\Shared\_Grid.cshtml" />
@@ -684,6 +684,8 @@
     <Content Include="Views\Settings\_ViewStart.cshtml" />
     <Content Include="Views\Settings\_Edit.cshtml" />
     <Content Include="Views\Shared\_MainAlerts .cshtml" />
+    <Content Include="Views\Message\All.cshtml" />
+    <Content Include="Views\Message\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -182,7 +182,7 @@ namespace Ematig_Portal.Controllers
 
         //
         // GET: /Account/Manage/id
-        public ActionResult Manage(long? id)
+        public ActionResult Edit(long? id)
         {
             ViewBag.ReturnUrl = Url.Action("All");
 
@@ -229,7 +229,7 @@ namespace Ematig_Portal.Controllers
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Manage(ManageUserViewModel model)
+        public async Task<ActionResult> Edit(ManageUserViewModel model)
         {
             if (model != null)
             {

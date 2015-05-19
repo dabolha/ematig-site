@@ -28,12 +28,14 @@ namespace Ematig_Portal.Controllers
 
         #endregion
 
+        #region Send
+
         //
         // GET: /Message/Send
         [AllowAnonymous]
         public ActionResult Send()
         {
-            return PartialView("_SendMessage");
+            return PartialView("_Send");
         }
 
         //
@@ -41,7 +43,7 @@ namespace Ematig_Portal.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Send(SendMessageViewModel model)
+        public ActionResult Send(MessageModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +73,119 @@ namespace Ematig_Portal.Controllers
             }
         }
 
-        private Message ProcessMessage(EmatigBbContext context, SendMessageViewModel model)
+        #endregion
+
+        #region Get
+
+        //
+        // GET: /Message/All
+        public ActionResult All()
+        {
+            using (var context = this._BbContext)
+            {
+                var messageList = context.Message
+                    .ToList();
+                if (messageList == null || messageList.Count == 0)
+                {
+                    return View();
+                }
+
+                MessageViewModel messageViewModel = new MessageViewModel();
+                messageViewModel.MessageList = messageList.Select(item => new ViewMessageModel()
+                    {
+                        Id = item.Id,
+                        MessageTypeID = item.MessageTypeId,
+                        ToEmail = item.ToEmail,
+                        Subject = item.Subject,
+                        Message = item.Body,
+                        SentDate = item.SentDate,
+                        CreationDate = item.CreationDate
+                    })
+                    .ToList();
+
+                return View(messageViewModel);
+            }
+        }
+
+        #endregion
+
+        #region Edit
+
+        //
+        // GET: /Message/Edit/Id
+        public ActionResult Edit(long id)
+        {
+            using (var context = this._BbContext)
+            {
+                var message = context.Message
+                    .FirstOrDefault(item => item.Id == id);
+
+                if (message == null)
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                    return RedirectToAction("All");
+                }
+
+                MessageViewModel messageViewModel = new MessageViewModel();
+                messageViewModel.Message = new ViewMessageModel()
+                {
+                    Id = message.Id,
+                    MessageTypeID = message.MessageTypeId,
+                    ToEmail = message.ToEmail,
+                    Subject = message.Subject,
+                    Message = message.Body,
+                    SentDate = message.SentDate,
+                    CreationDate = message.CreationDate
+                };
+
+                return PartialView("_Edit", messageViewModel);
+            }
+        }
+
+        //
+        // POST: /Message/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(MessageViewModel model)
+        {
+            if (!ModelState.IsValid
+                || model == null
+                || model.Message == null)
+            {
+                Error(ProcessResultMessage(ResultMessageType.Error));
+                return RedirectToAction("All");
+            }
+
+            using (var context = this._BbContext)
+            {
+                var message = context.Message
+                    .FirstOrDefault(item => item.Id == model.Message.Id);
+
+                if (message == null)
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                    return RedirectToAction("All");
+                }
+
+                message.CreationDate = model.Message.CreationDate;
+
+                if (context.SaveChanges() > 0)
+                {
+                    Success(ProcessResultMessage(ResultMessageType.OperationSuccess), true);
+                    return RedirectToAction("All");
+                }
+                else
+                {
+                    Error(ProcessResultMessage(ResultMessageType.Error));
+                }
+            }
+
+            return RedirectToAction("All");
+        }
+
+        #endregion
+
+        private Message ProcessMessage(EmatigBbContext context, MessageModel model)
         {
             MessageTypeDestination messageTypeDestination = GetMessageDestination(context, MessageTypeEnum.ContactRequest);
             if (messageTypeDestination == null)

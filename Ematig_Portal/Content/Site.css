@@ -415,3 +415,13 @@ p.copyright {
 {
     width:90%;
 }
+
+.text-area-html 
+{
+  min-height: 150px;
+  overflow-y: scroll;
+}
+
+.form-control[disabled], fieldset[disabled] .form-control {
+  cursor: default!important;
+}

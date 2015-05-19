@@ -18,7 +18,7 @@
                                 .Encoded(false)
                                 .Sanitized(false)
                                 .SetWidth(10)
-                                .RenderValueAs(c => @<b><a href="@Url.Action("Manage", "Account", new { id = c.Id })"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a></b>);
+                                .RenderValueAs(c => @<b><a href="@Url.Action("Edit", "Account", new { id = c.Id })"><span aria-hidden="true" class="fa fa-pencil-square-o"></span></a></b>);
                         columns.Add(c => c.Id).Titled("ID").Sortable(true);
                         columns.Add(c => c.LastName)
                             .Titled("Nome")

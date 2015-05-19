@@ -3,7 +3,8 @@
     $.ajaxSetup({ cache: false });
 
     $('.modal-link').click(function () {
-        $('.modal-content').load($('.modal-link').attr('href'), function () {
+        var href = $(this).attr('href');
+        $('.modal-content').load(href, function () {
             $('.modal').modal({
                 backdrop: 'static',
                 keyboard: true

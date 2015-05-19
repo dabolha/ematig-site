@@ -62,6 +62,8 @@
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Post-Deployment" />
     <Folder Include="Scripts\Post-Deployment\Data" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="Scripts\Archive" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AspNetUsers.sql" />
@@ -81,9 +83,14 @@
     <None Include="Scripts\Post-Deployment\Data\Data.MessageType.sql" />
     <None Include="Scripts\Post-Deployment\Data\Data.MessageChannel.sql" />
     <None Include="Scripts\Post-Deployment\Data\Data.MessageTypeDestination.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
+    <None Include="Scripts\Archive\ELMAH-1.2-db-SQLServer.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment1.sql" />

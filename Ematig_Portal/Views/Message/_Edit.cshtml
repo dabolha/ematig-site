@@ -1,0 +1,67 @@
+﻿@using Ematig_Portal.Models;
+@model MessageViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Mensagem</h3>
+</div>
+
+@using (Html.BeginForm("Edit", "Message", FormMethod.Post, new { id = "messageForm", @class = "form-horizontal modal-form" }))
+{
+    @Html.ValidationSummary()
+
+    @Html.AntiForgeryToken();
+
+    <div class="modal-body">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message.ToEmail, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Message.ToEmail, new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message.Subject, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Message.Subject, new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+
+        @{
+    Model.Message.Message = System.Web.HttpUtility.HtmlDecode(Model.Message.Message);
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message.Message, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <div class="text-area-html  form-control" disabled="disabled">
+                    @Html.Raw(Model.Message.Message)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message.CreationDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Message.CreationDate, new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message.SentDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Message.SentDate, new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn-toolbar">
+            <button class="btn btn-info pull-right" type="submit">Enviar novamente</button>
+            <button class="btn btn-info-inv pull-right close-modal" data-dismiss="modal" aria-hidden="true">Voltar</button>
+        </div>
+    </div>
+
+}

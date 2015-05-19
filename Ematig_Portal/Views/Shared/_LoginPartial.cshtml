@@ -9,12 +9,16 @@
         <li class="dropdown">
             <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown"><span aria-hidden="true" class="fa fa-cogs"></span> Olá @User.Identity.GetUserName() <span aria-hidden="true" class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="@Url.Action("Manage", "Account")"><span aria-hidden="true" class="fa fa-pencil-square-o"></span> Alterar dados</a></li>
+                <li><a href="@Url.Action("Edit", "Account")"><span aria-hidden="true" class="fa fa-pencil-square-o"></span> Alterar dados</a></li>
                 <li><a href="@Url.Action("All", "Account")"><span aria-hidden="true" class="fa fa-user"></span> Gerir utilizadores</a></li>
-                <li><a href="@Url.Action("All", "Settings")"><span aria-hidden="true" class="fa fa-cogs"></span> Configurações gerais</a></li>
-                <li><a href="/@ConfigurationManager.AppSettings["elmah.mvc.route"]"><span aria-hidden="true" class="fa fa-life-ring"></span> Elmah</a></li>
-                <li><a href="/glimpse"><span aria-hidden="true" class="fa fa-line-chart"></span> Glimpse</a></li>
+                <li><a href="@Url.Action("All", "Settings")"><span aria-hidden="true" class="fa fa-wrench"></span> Configurações gerais</a></li>
+                <li><a href="@Url.Action("All", "Message")"><span aria-hidden="true" class="fa fa-envelope"></span> Mensagens</a></li>
+
+                <li><a href="/@ConfigurationManager.AppSettings["elmah.mvc.route"]"><span aria-hidden="true" class="fa fa-life-ring"></span> Logging</a></li>
+                <li><a href="/glimpse"><span aria-hidden="true" class="fa fa-line-chart"></span> Diagnostics</a></li>
                 <li><a href="/trace.axd"><span aria-hidden="true" class="fa fa-heart"></span> Tracing</a></li>
+                <li><a href="/management"><span aria-hidden="true" class="fa fa-info-circle"></span> Boilerplate</a></li>
+
                 <li><a href="javascript:document.getElementById('logoutForm').submit()"><span aria-hidden="true" class="fa fa-sign-out"></span> Sair </a></li>
             </ul>
         </li>
