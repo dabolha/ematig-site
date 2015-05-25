@@ -1,4 +1,5 @@
-﻿using Ematig_Portal.Helpers;
+﻿using Ematig_Portal.BLL;
+using Ematig_Portal.Domain.Enum;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,66 @@ namespace Ematig_Portal.Controllers
 {
     public class BaseController : Controller
     {
+        #region Facade
+
+        private IdentityFacade _identityFacade;
+        public IdentityFacade IdentityFacade 
+        {
+            get
+            {
+                if (this._identityFacade == null)
+                {
+                    this._identityFacade = new IdentityFacade();
+                }
+                return this._identityFacade;
+            }
+            set
+            {
+                _identityFacade = value;
+            }
+        }
+
+        private SettingsFacade _settingsFacade;
+        public SettingsFacade SettingsFacade 
+        {
+            get
+            {
+                if (this._settingsFacade == null)
+                {
+                    this._settingsFacade = new SettingsFacade();
+                }
+                return this._settingsFacade;
+            }
+        }
+
+        private MessageFacade _messageFacade;
+        public MessageFacade MessageFacade
+        {
+            get
+            {
+                if (this._messageFacade == null)
+                {
+                    this._messageFacade = new MessageFacade();
+                }
+                return this._messageFacade;
+            }
+        }
+
+        private UserFacade _userFacade;
+        public UserFacade UserFacade
+        {
+            get
+            {
+                if (this._userFacade == null)
+                {
+                    this._userFacade = new UserFacade();
+                }
+                return this._userFacade;
+            }
+        }
+
+        #endregion
+
         //protected void AddErrors(IdentityResult result)
         //{
         //    foreach (var error in result.Errors)
@@ -83,6 +144,17 @@ namespace Ematig_Portal.Controllers
         public void LogError(string message)
         {
             Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception(message));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.SettingsFacade.Dispose();
+                this.MessageFacade.Dispose();
+                this.UserFacade.Dispose();
+            }
+            base.Dispose(disposing);
         }
 	}
 }

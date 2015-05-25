@@ -1,7 +1,7 @@
 ﻿namespace Ematig_Portal
 {
     using System.Web.Optimization;
-    using Ematig_Portal.Constants;
+    using Ematig_Portal.Domain.Constants;
 
     public static class BundleConfig
     {
@@ -58,21 +58,21 @@
         {
             // jQuery - The JavaScript helper API (http://jquery.com/).
             Bundle jqueryBundle = new ScriptBundle("~/bundles/jquery")
-                .Include("~/Scripts/jquery-{version}.js");
+                .Include("~/Content/Scripts/jquery-{version}.js");
             bundles.Add(jqueryBundle);
 
             Bundle jqueryUIBundle = new ScriptBundle("~/bundles/jqueryui")
-              .Include("~/Scripts/jquery-ui-{version}.js");
+              .Include("~/Content/Scripts/jquery-ui-{version}.js");
             bundles.Add(jqueryUIBundle);
 
             // jQuery Validate - Client side JavaScript form validation (http://jqueryvalidation.org/).
             Bundle jqueryValidateBundle = new ScriptBundle("~/bundles/jqueryval")
-                .Include("~/Scripts/jquery.validate*");
+                .Include("~/Content/Scripts/jquery.validate*");
             bundles.Add(jqueryValidateBundle);
              
             // Microsoft jQuery Validate Unobtrusive - Validation using HTML data- attributes (http://stackoverflow.com/questions/11534910/what-is-jquery-unobtrusive-validation)
             Bundle jqueryValidateUnobtrusiveBundle = new ScriptBundle("~/bundles/jqueryvalunobtrusive")
-                .Include("~/Scripts/jquery.validate*");
+                .Include("~/Content/Scripts/jquery.validate*");
             bundles.Add(jqueryValidateUnobtrusiveBundle);
 
             // Modernizr - Allows you to check if a particular API is available in the browser (http://modernizr.com).
@@ -83,38 +83,38 @@
             // and returns true for them. This is REALLY bad and needs to be fixed soon. See here for details:
             // https://github.com/Modernizr/Modernizr/pull/1263 and http://stackoverflow.com/questions/26532234/modernizr-causes-content-security-policy-csp-violation-errors
             Bundle modernizrBundle = new ScriptBundle("~/bundles/modernizr") // , ContentDeliveryNetwork.Microsoft.ModernizrUrl
-                //.Include("~/Scripts/modernizr-*");
-                .Include("~/Scripts/modernizr-*");
+                //.Include("~/Content/Scripts/modernizr-*");
+                .Include("~/Content/Scripts/modernizr-*");
             bundles.Add(modernizrBundle);
 
             // Bootstrap - Twitter Bootstrap JavaScript (http://getbootstrap.com/).
             Bundle bootstrapBundle = new ScriptBundle("~/bundles/bootstrap", ContentDeliveryNetwork.Microsoft.BootstrapUrl)
-                .Include("~/Scripts/bootstrap.js")
-                .Include("~/Scripts/bootstrap-datepicker.js");
+                .Include("~/Content/Scripts/bootstrap.js")
+                .Include("~/Content/Scripts/bootstrap-datepicker.js");
             bundles.Add(bootstrapBundle);
 
             // Respond.js - A fast & lightweight polyfill for min/max-width CSS3 Media Queries (https://github.com/scottjehl/Respond). 
             // Note: that the CDN version is a little behind the latest 1.4.2.
             Bundle respondBundle = new ScriptBundle("~/bundles/respond", ContentDeliveryNetwork.Microsoft.RespondUrl)
-                .Include("~/Scripts/respond.js");
+                .Include("~/Content/Scripts/respond.js");
             bundles.Add(respondBundle);
 
             // Failover Core - If the CDN's fail then these scripts load local copies of the same scripts.
             Bundle failoverCoreBundle = new ScriptBundle("~/bundles/failovercore")
-                .Include("~/Scripts/Failover/jquery.js")
-                .Include("~/Scripts/Failover/jqueryval.js")
-                .Include("~/Scripts/Failover/jqueryvalunobtrusive.js")
-                .Include("~/Scripts/Failover/bootstrap.js");
+                .Include("~/Content/Scripts/Failover/jquery.js")
+                .Include("~/Content/Scripts/Failover/jqueryval.js")
+                .Include("~/Content/Scripts/Failover/jqueryvalunobtrusive.js")
+                .Include("~/Content/Scripts/Failover/bootstrap.js");
             bundles.Add(failoverCoreBundle);
 
             // Failover Respond - If the Respond.js CDN fails then this script loads a local copy. 
             // Note: This script is only used if the browser is running IE8 or less.
             Bundle failoverRespondBundle = new ScriptBundle("~/bundles/failoverrespond")
-                .Include("~/Scripts/Failover/respond.js");
+                .Include("~/Content/Scripts/Failover/respond.js");
             bundles.Add(failoverRespondBundle);
 
             Bundle custom = new ScriptBundle("~/bundles/custom")
-               .Include("~/Scripts/Modal.js");
+               .Include("~/Content/Scripts/Modal.js");
             bundles.Add(custom);
         }
     }

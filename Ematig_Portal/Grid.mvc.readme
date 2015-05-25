@@ -3,7 +3,7 @@
 Note: Grid.Mvc installer has already made the following changes to your project:
 - Views/Shared/_Grid.cshtml, Views/Shared/_GridPager.cshtml - views for grid
 - Content/Gridmvc.css - default stylesheet for the grid
-- Scripts/gridmvc.js, Scripts/gridmvc.min.js - Grid.Mvc scripts
+- Content/Scripts/gridmvc.js, Content/Scripts/gridmvc.min.js - Grid.Mvc scripts
 - Reference GridMvc.dll
 
 Follow these steps to start use Grid.mvc:
@@ -44,7 +44,7 @@ Follow these steps to start use Grid.mvc:
 4. Register a grid stylesheet and scripts in your _Layouts.cshtml file:
 	
 	<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
-	<script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"> </script>
+	<script src="@Url.Content("~/Content/Scripts/gridmvc.min.js")" type="text/javascript"> </script>
 
 
 Notes:

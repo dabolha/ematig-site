@@ -1,7 +1,7 @@
 ﻿namespace Ematig_Portal
 {
     using System.Web.Mvc;
-    using Ematig_Portal.Constants;
+    using Ematig_Portal.Domain.Constants;
     using NWebsec.Csp;
     using NWebsec.Mvc.HttpHeaders;
     using NWebsec.Mvc.HttpHeaders.Csp;

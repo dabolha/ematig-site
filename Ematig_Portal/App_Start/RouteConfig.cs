@@ -17,7 +17,7 @@
             // Ignore everything in the Content folder.
             routes.IgnoreRoute("Content/{*pathInfo}");
             // Ignore everything in the Scripts folder.
-            routes.IgnoreRoute("Scripts/{*pathInfo}");
+            routes.IgnoreRoute("Content/Scripts/{*pathInfo}");
             // Ignore the Forbidden.html file.
             routes.IgnoreRoute("Error/Forbidden.html");
             // Ignore the GatewayTimeout.html file.

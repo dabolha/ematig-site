@@ -3,7 +3,7 @@
     using System.Net;
     using System.Web.Mvc;
     using System.Web.UI;
-    using Ematig_Portal.Constants;
+    using Ematig_Portal.Domain.Constants;
     using Ematig_Portal.Models;
 
     /// <summary>

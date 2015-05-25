@@ -17,7 +17,9 @@
                     <div class="form-group">
                         @Html.LabelFor(m => m.Setting.Key, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.Setting.Key, new { @class = "form-control", disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.Setting.Key, new { @readonly = "readonly", @class = "form-control" })
+                            @*@Html.DisplayFor(m => m.Setting.Key, new { @class = "form-control-static" })*@
+                            @*@Html.Raw("<p class='form-control-static'>" + Model.Setting.Key + "</p>")*@
                         </div>
                     </div>
                     <div class="form-group">
