@@ -6,6 +6,7 @@
     using Autofac.Integration.Mvc;
     using Ematig_Portal.Services;
     using Owin;
+    using Ematig_Portal.Domain.Interface;
 
     /// <summary>
     /// Register types into the Autofac Inversion of Control (IOC) container.

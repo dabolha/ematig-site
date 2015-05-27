@@ -1,7 +1,9 @@
-﻿using Ematig_Portal.Domain;
+﻿using Ematig_Portal.DAL;
+using Ematig_Portal.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +15,8 @@ namespace Ematig_Portal.BLL
         {
         }
 
-        public SettingsFacade(EmatigBDContext context)
-            : base(context)
+        public SettingsFacade(UnitOfWork repository)
+            : base(repository)
         {
         }
 
@@ -31,15 +33,15 @@ namespace Ematig_Portal.BLL
             if (input == null)
                 return;
 
-            var setting = this.Context.Settings
-                .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (input.Key ?? "").Trim().ToLower());
+            var setting = this.Repository.SettingsRepository
+                .FirstOrDefault(filter: item => (item.Key ?? "").Trim().ToLower() == (input.Key ?? "").Trim().ToLower());
 
             if (setting == null)
                 return;
 
             setting.Value = input.Value;
 
-            actionResult.Success = this.Context.SaveChanges() > 0;
+            actionResult.Success = this.Repository.Save();
         }
 
         public override void Delete(Settings input, ref ActionResult actionResult)
@@ -52,13 +54,18 @@ namespace Ematig_Portal.BLL
             if (string.IsNullOrEmpty(key))
                 return null;
 
-            return this.Context.Settings
+            return this.Repository.SettingsRepository
                 .FirstOrDefault(item => (item.Key ?? "").Trim().ToLower() == (key ?? "").Trim().ToLower());
+        }
+
+        public override Domain.Settings GetByCustom(Expression<Func<Domain.Settings, bool>> filter = null)
+        {
+            return this.Repository.SettingsRepository.FirstOrDefault(filter);
         }
 
         public override ICollection<Domain.Settings> Get()
         {
-            return this.Context.Settings.ToList();
+            return this.Repository.SettingsRepository.ToList();
 
         }
     }

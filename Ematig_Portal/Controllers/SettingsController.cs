@@ -13,7 +13,7 @@ namespace Ematig_Portal.Controllers
         // GET: /Settings/All
         public ActionResult All()
         {
-            var settingsList = this.SettingsFacade.Get();
+            var settingsList = this.SettingsService.Get();
             if (settingsList == null || settingsList.Count == 0)
             {
                 return View();
@@ -47,7 +47,7 @@ namespace Ematig_Portal.Controllers
                 return RedirectToAction("All");
             }
 
-            var setting = this.SettingsFacade.GetByKey(key);
+            var setting = this.SettingsService.GetByKey(key);
             if (setting == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
@@ -81,7 +81,7 @@ namespace Ematig_Portal.Controllers
                 return RedirectToAction("All");
             }
 
-            var setting = this.SettingsFacade.GetByKey(model.Setting.Key);
+            var setting = this.SettingsService.GetByKey(model.Setting.Key);
             if (setting == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
@@ -92,7 +92,7 @@ namespace Ematig_Portal.Controllers
 
             Domain.ActionResult actionResult = null;
 
-            this.SettingsFacade.Update(setting, ref actionResult);
+            this.SettingsService.Update(setting, ref actionResult);
             if (actionResult == null || ! actionResult.Success)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));

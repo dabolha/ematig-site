@@ -7,6 +7,7 @@
     using Ematig_Portal.Helpers.Framework;
     using Ematig_Portal.Services;
     using NWebsec.Csp;
+    using Ematig_Portal.Domain.Interface;
 
     public class MvcApplication : System.Web.HttpApplication
     {

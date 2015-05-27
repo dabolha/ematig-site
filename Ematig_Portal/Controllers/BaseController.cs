@@ -1,5 +1,6 @@
 ﻿using Ematig_Portal.BLL;
 using Ematig_Portal.Domain.Enum;
+using Ematig_Portal.Domain.Interface;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,59 +14,59 @@ namespace Ematig_Portal.Controllers
     {
         #region Facade
 
-        private IdentityFacade _identityFacade;
-        public IdentityFacade IdentityFacade 
+        private IIdentityControllerService _identityService;
+        public IIdentityControllerService IdentityService
         {
             get
             {
-                if (this._identityFacade == null)
+                if (this._identityService == null)
                 {
-                    this._identityFacade = new IdentityFacade();
+                    this._identityService = new IdentityFacade();
                 }
-                return this._identityFacade;
+                return this._identityService;
             }
             set
             {
-                _identityFacade = value;
+                _identityService = value;
             }
         }
 
-        private SettingsFacade _settingsFacade;
-        public SettingsFacade SettingsFacade 
+        private IControllerService<string, Domain.Settings> _settingsService;
+        public IControllerService<string, Domain.Settings> SettingsService
         {
             get
             {
-                if (this._settingsFacade == null)
+                if (this._settingsService == null)
                 {
-                    this._settingsFacade = new SettingsFacade();
+                    this._settingsService = new SettingsFacade();
                 }
-                return this._settingsFacade;
+                return this._settingsService;
             }
         }
 
-        private MessageFacade _messageFacade;
-        public MessageFacade MessageFacade
+        private IControllerService<long, Domain.Message> _messageService;
+        public IControllerService<long, Domain.Message> MessageService
         {
             get
             {
-                if (this._messageFacade == null)
+                if (this._messageService == null)
                 {
-                    this._messageFacade = new MessageFacade();
+                    this._messageService = new MessageFacade();
                 }
-                return this._messageFacade;
+                return this._messageService;
             }
         }
 
-        private UserFacade _userFacade;
-        public UserFacade UserFacade
+        private IControllerService<long, Domain.User> _userService;
+        public IControllerService<long, Domain.User> UserService
         {
             get
             {
-                if (this._userFacade == null)
+                if (this._userService == null)
                 {
-                    this._userFacade = new UserFacade();
+                    this._userService = new UserFacade();
                 }
-                return this._userFacade;
+                return this._userService;
             }
         }
 
@@ -150,9 +151,9 @@ namespace Ematig_Portal.Controllers
         {
             if (disposing)
             {
-                this.SettingsFacade.Dispose();
-                this.MessageFacade.Dispose();
-                this.UserFacade.Dispose();
+                this.SettingsService.Dispose();
+                this.MessageService.Dispose();
+                this.UserService.Dispose();
             }
             base.Dispose(disposing);
         }

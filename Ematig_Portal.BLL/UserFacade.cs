@@ -1,7 +1,9 @@
-﻿using Ematig_Portal.Domain;
+﻿using Ematig_Portal.DAL;
+using Ematig_Portal.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +16,8 @@ namespace Ematig_Portal.BLL
         {
         }
 
-        public UserFacade(EmatigBDContext context)
-            : base(context)
+        public UserFacade(UnitOfWork repository)
+            : base(repository)
         {
         }
 
@@ -43,9 +45,9 @@ namespace Ematig_Portal.BLL
                 ModificationDate = DateTime.Now
             };
 
-            this.Context.User.Add(user);
+            this.Repository.UserRepository.Insert(user);
 
-            if (actionResult.Success = this.Context.SaveChanges() > 0)
+            if (actionResult.Success = this.Repository.Save())
             {
                 return user.Id;
             }
@@ -62,7 +64,7 @@ namespace Ematig_Portal.BLL
             if (input == null)
                 return;
 
-            var user = this.Context.User.FirstOrDefault(item => item.Id == input.Id);
+            var user = this.Repository.UserRepository.FirstOrDefault(item => item.Id == input.Id);
             if (user == null)
             {
                 return;
@@ -79,7 +81,7 @@ namespace Ematig_Portal.BLL
             user.PhoneNumber = input.PhoneNumber;
             user.ModificationDate = DateTime.Now;
 
-            actionResult.Success = this.Context.SaveChanges() > 0;
+            actionResult.Success = this.Repository.Save();
 
         }
 
@@ -90,7 +92,7 @@ namespace Ematig_Portal.BLL
 
         public override User GetByKey(long key)
         {
-            return this.Context.User
+            return this.Repository.UserRepository
                 .FirstOrDefault
                     (
                         item =>
@@ -99,25 +101,15 @@ namespace Ematig_Portal.BLL
                     );
         }
 
-        public User GetByAuthID(string authID)
+        public override User GetByCustom(Expression<Func<User, bool>> filter = null)
         {
-            if (string.IsNullOrEmpty(authID))
-            {
-                return null;
-            }
-
-            return this.Context.User
-                .FirstOrDefault
-                    (
-                        item =>
-                            (item.AuthId ?? "").Trim() == (authID ?? "").Trim()
-
-                    );
+            return this.Repository.UserRepository.FirstOrDefault(filter);
         }
 
         public override ICollection<User> Get()
         {
-            return this.Context.User.ToList();
+            return this.Repository.UserRepository.ToList();
         }
+        
     }
 }

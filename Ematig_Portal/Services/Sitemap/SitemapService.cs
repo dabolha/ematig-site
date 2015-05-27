@@ -10,6 +10,7 @@
     using System.Xml.Linq;
     using Ematig_Portal.Domain.Constants;
     using Ematig_Portal.Helpers.Framework;
+    using Ematig_Portal.Domain.Interface;
 
     /// <summary>
     /// Generates sitemap XML for the current site.

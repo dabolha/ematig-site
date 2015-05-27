@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Web;
     using Elmah;
+    using Ematig_Portal.Domain.Interface;
 
     public sealed class LoggingService : ILoggingService
     {

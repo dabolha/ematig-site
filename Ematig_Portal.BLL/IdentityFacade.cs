@@ -1,5 +1,6 @@
 ﻿using Ematig_Portal.Domain;
 using Ematig_Portal.Domain.Constants;
+using Ematig_Portal.Domain.Interface;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Ematig_Portal.BLL
 {
-    public class IdentityFacade
+    public class IdentityFacade : IIdentityControllerService
     {
         private ApplicationUserManager UserIdentityManager { get; set; }
         private UserStore<ApplicationUser> UserStore { get; set; }
@@ -35,14 +36,6 @@ namespace Ematig_Portal.BLL
             this.Context = new EmatigBDContext();
             this.UserStore = new UserStore<ApplicationUser>(new UserIdentityContext());
             this.UserIdentityManager = new ApplicationUserManager(this.UserStore);//new UserManager<ApplicationUser>(this._UserStore);
-        }
-
-        public IdentityFacade(IAuthenticationManager authenticationManager)
-        {
-            this.Context = new EmatigBDContext();
-            this.UserStore = new UserStore<ApplicationUser>(new UserIdentityContext());
-            this.UserIdentityManager = new ApplicationUserManager(this.UserStore);
-            this.AuthenticationManager = authenticationManager;
         }
 
         #region Login
@@ -326,7 +319,7 @@ namespace Ematig_Portal.BLL
 
         #endregion
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUser user, ApplicationUserManager manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(ApplicationUser user, UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one 
             // defined in CookieAuthenticationOptions.AuthenticationType

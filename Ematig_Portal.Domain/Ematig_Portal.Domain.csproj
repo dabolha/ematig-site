@@ -144,6 +144,11 @@
     <Compile Include="Enum\Alert.cs" />
     <Compile Include="Enum\MessageTypeEnum.cs" />
     <Compile Include="Enum\ResultMessageType.cs" />
+    <Compile Include="Interface\IIdentityControllerService.cs" />
+    <Compile Include="Interface\ILoggingService.cs" />
+    <Compile Include="Interface\IControllerService.cs" />
+    <Compile Include="Interface\IRepository.cs" />
+    <Compile Include="Interface\ISitemapService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

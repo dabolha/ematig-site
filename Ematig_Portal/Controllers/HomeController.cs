@@ -8,6 +8,7 @@
     using Ematig_Portal.Domain.Constants;
     using Ematig_Portal.Helpers.Framework;
     using Ematig_Portal.Services;
+    using Ematig_Portal.Domain.Interface;
 
     public class HomeController : BaseController
     {

@@ -61,8 +61,8 @@ namespace Ematig_Portal.Controllers
                 return View(model);
             }
 
-            this.IdentityFacade.AuthenticationManager = this.AuthenticationManager;
-            var result = await this.IdentityFacade.PasswordSignIn(
+            this.IdentityService.AuthenticationManager = this.AuthenticationManager;
+            var result = await this.IdentityService.PasswordSignIn(
                     model.Email,
                     model.Password,
                     model.RememberMe,
@@ -95,8 +95,8 @@ namespace Ematig_Portal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            this.IdentityFacade.AuthenticationManager = this.AuthenticationManager;
-            this.IdentityFacade.LogOff();
+            this.IdentityService.AuthenticationManager = this.AuthenticationManager;
+            this.IdentityService.LogOff();
             return RedirectToAction("Index", "Home");
         }
 
@@ -131,8 +131,8 @@ namespace Ematig_Portal.Controllers
                 //Email = model.Email,
             };
 
-            this.IdentityFacade.AuthenticationManager = this.AuthenticationManager;
-            string id = await this.IdentityFacade.Add(identityUser, model.Password);
+            this.IdentityService.AuthenticationManager = this.AuthenticationManager;
+            string id = await this.IdentityService.Add(identityUser, model.Password);
             if (string.IsNullOrEmpty(id))
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
@@ -155,7 +155,7 @@ namespace Ematig_Portal.Controllers
             
             Domain.ActionResult actionResult = null;
             
-            this.UserFacade.Add(user, ref actionResult);
+            this.UserService.Add(user, ref actionResult);
 
             if (actionResult == null || ! actionResult.Success)
             {
@@ -190,11 +190,12 @@ namespace Ematig_Portal.Controllers
 
             if (id == null)
             {
-                user = this.UserFacade.GetByAuthID(User.Identity.GetUserId());
+                string authId = User.Identity.GetUserId();
+                user = this.UserService.GetByCustom(item => (item.AuthId ?? "").Trim() == (authId ?? "").Trim());
             }
             else
             {
-                user = this.UserFacade.GetByKey(id.Value);
+                user = this.UserService.GetByKey(id.Value);
             }
             
             if (user == null)
@@ -235,7 +236,7 @@ namespace Ematig_Portal.Controllers
 
             bool identityDataChanged = false;
 
-            Domain.User user = this.UserFacade.GetByKey(model.Id);
+            Domain.User user = this.UserService.GetByKey(model.Id);
             if (user == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.InvalidUser));
@@ -265,7 +266,7 @@ namespace Ematig_Portal.Controllers
             user.PhoneNumber = model.PhoneNumber;
 
             Domain.ActionResult actionResult = null;
-            this.UserFacade.Update(user, ref actionResult);
+            this.UserService.Update(user, ref actionResult);
 
             if (actionResult == null || ! actionResult.Success)
             {
@@ -278,8 +279,8 @@ namespace Ematig_Portal.Controllers
             #region Email / Password changed
             if (identityDataChanged)
             {
-                this.IdentityFacade.AuthenticationManager = this.AuthenticationManager;
-                var identityUser = this.IdentityFacade.GetByKey(model.AuthId);
+                this.IdentityService.AuthenticationManager = this.AuthenticationManager;
+                var identityUser = this.IdentityService.GetByKey(model.AuthId);
                 if (identityUser == null)
                 {
                     Error(ProcessResultMessage(ResultMessageType.InvalidUser));
@@ -288,7 +289,7 @@ namespace Ematig_Portal.Controllers
 
                 identityUser.UserName = (model.Email ?? "").Trim();
 
-                bool result = await this.IdentityFacade.Update(identityUser, model.OldPassword, model.NewPassword);
+                bool result = await this.IdentityService.Update(identityUser, model.OldPassword, model.NewPassword);
                 if (! result)
                 {
                     Error(ProcessResultMessage(ResultMessageType.InvalidUser));
@@ -309,7 +310,7 @@ namespace Ematig_Portal.Controllers
         // GET: /Account/All
         public ActionResult All()
         {
-            var userList = this.UserFacade.Get();
+            var userList = this.UserService.Get();
             if (userList == null || userList.Count == 0)
             {
                 return View();

@@ -1,4 +1,4 @@
-﻿namespace Ematig_Portal.Services
+﻿namespace Ematig_Portal.Domain.Interface
 {
     using System;
 

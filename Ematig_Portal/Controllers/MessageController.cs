@@ -43,7 +43,7 @@ namespace Ematig_Portal.Controllers
             };
 
             Domain.ActionResult actionResult = null;
-            this.MessageFacade.Add(message, ref actionResult);
+            this.MessageService.Add(message, ref actionResult);
 
             if (actionResult == null || !actionResult.Success)
             {
@@ -63,7 +63,7 @@ namespace Ematig_Portal.Controllers
         // GET: /Message/All
         public ActionResult All()
         {
-            var messageList = this.MessageFacade.Get();
+            var messageList = this.MessageService.Get();
             if (messageList == null || messageList.Count == 0)
             {
                 return View();
@@ -93,7 +93,7 @@ namespace Ematig_Portal.Controllers
         // GET: /Message/Edit/Id
         public ActionResult Edit(long id)
         {
-            var message = this.MessageFacade.GetByKey(id);
+            var message = this.MessageService.GetByKey(id);
             if (message == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
@@ -129,7 +129,7 @@ namespace Ematig_Portal.Controllers
                 return RedirectToAction("All");
             }
 
-            var message = this.MessageFacade.GetByKey(model.Message.Id);
+            var message = this.MessageService.GetByKey(model.Message.Id);
             if (message == null)
             {
                 Error(ProcessResultMessage(ResultMessageType.Error));
@@ -140,7 +140,7 @@ namespace Ematig_Portal.Controllers
 
             Domain.ActionResult actionResult = null;
 
-            this.MessageFacade.Update(message, ref actionResult);
+            this.MessageService.Update(message, ref actionResult);
 
             if (actionResult == null || !actionResult.Success)
             {

@@ -1,26 +1,29 @@
-﻿using Ematig_Portal.Domain;
+﻿using Ematig_Portal.DAL;
+using Ematig_Portal.Domain;
+using Ematig_Portal.Domain.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Ematig_Portal.BLL
 {
-    public abstract class FacadeBase<_EntityKey, _DomainObject>
+    public abstract class FacadeBase<_EntityKey, _DomainObject> : IControllerService<_EntityKey, _DomainObject>
         where _DomainObject : DomainObject, new()
     {
-        public EmatigBDContext Context { get; set; }
+        protected UnitOfWork Repository { get; set; }
 
         public FacadeBase()
         {
-            this.Context = new EmatigBDContext();
+            this.Repository = new UnitOfWork();
         }
 
-        public FacadeBase(EmatigBDContext context)
+        public FacadeBase(UnitOfWork repository)
         {
-            this.Context = context;
+            this.Repository = repository;
         }
 
         public abstract _EntityKey Add(_DomainObject input, ref ActionResult actionResult);
@@ -31,14 +34,17 @@ namespace Ematig_Portal.BLL
 
         public abstract _DomainObject GetByKey(_EntityKey key);
 
+        public abstract _DomainObject GetByCustom(Expression<Func<_DomainObject, bool>> filter = null);
+
         public abstract ICollection<_DomainObject> Get();
 
         public void Dispose()
         {
-            if (this.Context != null)
+            if (this.Repository != null)
             {
-                this.Context.Dispose();
+                this.Repository.Dispose();
             }
         }
+
     }
 }
