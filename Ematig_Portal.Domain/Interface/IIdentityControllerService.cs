@@ -27,9 +27,9 @@ namespace Ematig_Portal.Domain.Interface
 
         void LogOff();
 
-        Task<string> Add(Domain.ApplicationUser identityUser, string password);
+        string Add(Domain.ApplicationUser identityUser, string password);
 
-        Task<bool> Update(Domain.ApplicationUser identityUser, string oldPassword, string newPassword);
+        bool Update(Domain.ApplicationUser identityUser, string oldPassword, string newPassword);
 
         Domain.ApplicationUser GetByKey(string key);
 

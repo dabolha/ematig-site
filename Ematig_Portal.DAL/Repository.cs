@@ -69,6 +69,19 @@ namespace Ematig_Portal.DAL
             return query.FirstOrDefault();
         }
 
+        public virtual bool Any(
+            Expression<Func<TEntity, bool>> filter = null)
+        {
+            IQueryable<TEntity> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return query.FirstOrDefault() != null;
+        }
+
         public virtual TEntity GetByID(object id)
         {
             return dbSet.Find(id);

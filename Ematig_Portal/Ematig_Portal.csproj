@@ -230,6 +230,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Helpers\DisplayMessage.cs" />
     <Compile Include="Helpers\Filter\ValidateModelStateAttribute.cs" />
     <Compile Include="Helpers\Framework\CspViolationException.cs" />
     <Compile Include="Helpers\Framework\SitemapFrequency.cs" />

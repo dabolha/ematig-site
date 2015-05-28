@@ -11,6 +11,7 @@ namespace Ematig_Portal.Domain.Enum
         ChangeInfoSuccess,
         RemoveLoginSuccess,
         RegisterUserSuccess,
+        EmailAlreadyExists,
         OperationSuccess,
         Error,
         InvalidCredentials,

@@ -12,8 +12,7 @@
     [BirthDate]            DATETIME       DEFAULT GetDate() NOT NULL,
     [CreationDate]         DATETIME       DEFAULT GetDate() NOT NULL,
     [ModificationDate]     DATETIME       DEFAULT GetDate() NOT NULL,
-    CONSTRAINT [PK_dbo.User] PRIMARY KEY CLUSTERED ([Id] ASC), 
-    CONSTRAINT [FK_User_ToTable] FOREIGN KEY ([AuthId]) REFERENCES [AspNetUsers]([Id])
+    CONSTRAINT [PK_dbo.User] PRIMARY KEY CLUSTERED ([Id] ASC) 
 );
 
 

@@ -2,6 +2,7 @@
 using Ematig_Portal.Domain;
 using Ematig_Portal.Domain.Constants;
 using Ematig_Portal.Domain.Enum;
+using Ematig_Portal.Domain.Enum.ActionResult;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Ematig_Portal.BLL
         public override long Add(Message input, ref ActionResult actionResult)
         {
             if (actionResult == null)
-                actionResult = new ActionResult();
+                actionResult = new ActionResult() { OperationStatus = MessageEnum.Error };
 
             if (input == null)
                 return -1;
@@ -43,6 +44,7 @@ namespace Ematig_Portal.BLL
 
             if (actionResult.Success = this.Repository.Save())
             {
+                actionResult.OperationStatus = MessageEnum.Success;
                 return message.Id;
             }
 
@@ -52,7 +54,7 @@ namespace Ematig_Portal.BLL
         public override void Update(Message input, ref ActionResult actionResult)
         {
             if (actionResult == null)
-                actionResult = new ActionResult();
+                actionResult = new ActionResult() { OperationStatus = MessageEnum.Error };
 
             if (input == null)
                 return;
@@ -65,7 +67,10 @@ namespace Ematig_Portal.BLL
 
             message.SentDate = input.SentDate;
 
-            actionResult.Success = this.Repository.Save();
+            if(actionResult.Success = this.Repository.Save())
+            {
+                actionResult.OperationStatus = MessageEnum.Success;
+            }
         }
 
         public override void Delete(Message input, ref ActionResult actionResult)

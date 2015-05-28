@@ -125,23 +125,13 @@ namespace Ematig_Portal.Controllers
                 return View(model);
             }
 
-            var identityUser = new Domain.ApplicationUser()
-            {
-                UserName = model.Email
-                //Email = model.Email,
-            };
-
-            this.IdentityService.AuthenticationManager = this.AuthenticationManager;
-            string id = await this.IdentityService.Add(identityUser, model.Password);
-            if (string.IsNullOrEmpty(id))
-            {
-                Error(ProcessResultMessage(ResultMessageType.Error));
-                return View(model);
-            }
+            //TODO: RF
+            ((UserFacade)this.UserService).UserName = model.Email;
+            ((UserFacade)this.UserService).Password = model.Password;
+            ((UserFacade)this.UserService).AuthenticationManager = this.AuthenticationManager;
 
             Domain.User user = new Domain.User()
             {
-                AuthId = id,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Gender = model.Gender,
@@ -159,11 +149,12 @@ namespace Ematig_Portal.Controllers
 
             if (actionResult == null || ! actionResult.Success)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(actionResult);
+                LogError();
             }
             else
             {
-                Success(ProcessResultMessage(ResultMessageType.RegisterUserSuccess), true);
+                ProcessResult(actionResult);
                 return RedirectToAction("All");
             }
             
@@ -182,7 +173,8 @@ namespace Ematig_Portal.Controllers
 
             if (User == null || User.Identity == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return View();
             }
 
@@ -200,7 +192,8 @@ namespace Ematig_Portal.Controllers
             
             if (user == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return View();
             }
 
@@ -234,24 +227,16 @@ namespace Ematig_Portal.Controllers
                 return View(model);
             }
 
-            bool identityDataChanged = false;
-
             Domain.User user = this.UserService.GetByKey(model.Id);
             if (user == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.InvalidUser));
+                ProcessResult(null, ResultMessageType.InvalidUser);
                 return View(model);
             }
 
             if ((user.Email ?? "").Trim().ToLower() != (model.Email ?? "").Trim().ToLower())
             {
-                identityDataChanged = true;
                 user.Email = (model.Email ?? "").Trim();
-            }
-
-            if (!string.IsNullOrEmpty(model.NewPassword))
-            {
-                identityDataChanged = true;
             }
 
             #region ChangeUserInfo
@@ -266,39 +251,23 @@ namespace Ematig_Portal.Controllers
             user.PhoneNumber = model.PhoneNumber;
 
             Domain.ActionResult actionResult = null;
+
+            //TODO: RF
+            ((UserFacade)this.UserService).NewPassword = model.NewPassword;
+            ((UserFacade)this.UserService).OldPassword = model.OldPassword;
+            ((UserFacade)this.UserService).AuthenticationManager = this.AuthenticationManager;
+
             this.UserService.Update(user, ref actionResult);
 
             if (actionResult == null || ! actionResult.Success)
             {
-                Error(ProcessResultMessage(ResultMessageType.InvalidUser));
+                ProcessResult(null, ResultMessageType.InvalidUser);
                 return View(model);
             }
 
             #endregion
 
-            #region Email / Password changed
-            if (identityDataChanged)
-            {
-                this.IdentityService.AuthenticationManager = this.AuthenticationManager;
-                var identityUser = this.IdentityService.GetByKey(model.AuthId);
-                if (identityUser == null)
-                {
-                    Error(ProcessResultMessage(ResultMessageType.InvalidUser));
-                    return View(model);
-                }
-
-                identityUser.UserName = (model.Email ?? "").Trim();
-
-                bool result = await this.IdentityService.Update(identityUser, model.OldPassword, model.NewPassword);
-                if (! result)
-                {
-                    Error(ProcessResultMessage(ResultMessageType.InvalidUser));
-                    return View(model);
-                }
-            }
-            #endregion
-
-            Success(ProcessResultMessage(ResultMessageType.ChangeInfoSuccess), true);
+            ProcessResult(actionResult, ResultMessageType.ChangeInfoSuccess);
             return RedirectToAction("All");
         }
 

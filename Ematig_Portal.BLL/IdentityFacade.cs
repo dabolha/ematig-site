@@ -1,4 +1,5 @@
-﻿using Ematig_Portal.Domain;
+﻿using Ematig_Portal.BLL.Identity;
+using Ematig_Portal.Domain;
 using Ematig_Portal.Domain.Constants;
 using Ematig_Portal.Domain.Interface;
 using Microsoft.AspNet.Identity;
@@ -236,15 +237,15 @@ namespace Ematig_Portal.BLL
 
         #region Add
 
-        public async Task<string> Add(Domain.ApplicationUser identityUser, string password)
+        public string Add(Domain.ApplicationUser identityUser, string password)
         {
             if (identityUser == null || string.IsNullOrEmpty(password))
             {
                 return null;
             }
 
-            var result = await UserIdentityManager.CreateAsync(identityUser, password);
-            if (!result.Succeeded)
+            var result = UserIdentityManager.CreateAsync(identityUser, password);
+            if (identityUser != null)
             {
                 return identityUser.Id;
             }
@@ -267,7 +268,7 @@ namespace Ematig_Portal.BLL
 
         #region Update
 
-        public async Task<bool> Update(Domain.ApplicationUser identityUser, string oldPassword, string newPassword)
+        public bool Update(Domain.ApplicationUser identityUser, string oldPassword, string newPassword)
         {
             if (identityUser == null)
             {
@@ -296,8 +297,8 @@ namespace Ematig_Portal.BLL
 
             if (!string.IsNullOrEmpty(oldPassword) && !string.IsNullOrEmpty(newPassword))
             {
-                IdentityResult result = await this.UserIdentityManager.ChangePasswordAsync(user.Id, oldPassword, newPassword);
-                if (!result.Succeeded)
+                var result = this.UserIdentityManager.ChangePasswordAsync(user.Id, oldPassword, newPassword);
+                if (result == null)
                 {
                     return false;
                 }

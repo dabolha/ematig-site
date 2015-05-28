@@ -73,7 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationUserManager.cs" />
+    <Compile Include="Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\ApplicationUserManager.cs" />
     <Compile Include="FacadeBase.cs" />
     <Compile Include="SettingsFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

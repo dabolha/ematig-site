@@ -9,5 +9,6 @@ namespace Ematig_Portal.Domain
     public class ActionResult
     {
         public bool Success { get; set; }
+        public System.Enum OperationStatus { get; set; }
     }
 }

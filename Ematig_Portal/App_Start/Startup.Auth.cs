@@ -1,4 +1,5 @@
 ﻿using Ematig_Portal.BLL;
+using Ematig_Portal.BLL.Identity;
 using Ematig_Portal.Domain;
 using Ematig_Portal.Models;
 using Microsoft.AspNet.Identity;

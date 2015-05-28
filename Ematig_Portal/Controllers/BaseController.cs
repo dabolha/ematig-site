@@ -1,6 +1,8 @@
 ﻿using Ematig_Portal.BLL;
 using Ematig_Portal.Domain.Enum;
+using Ematig_Portal.Domain.Enum.ActionResult;
 using Ematig_Portal.Domain.Interface;
+using Ematig_Portal.Helpers;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -92,59 +94,141 @@ namespace Ematig_Portal.Controllers
             }
         }
 
-        protected string ProcessResultMessage(ResultMessageType? resultMessageType)
+        protected void ProcessResult(Domain.ActionResult actionResult, ResultMessageType? resultMessageType = null)
         {
-            return resultMessageType == ResultMessageType.OperationSuccess ? "Operação realizada com sucesso."
-                    : resultMessageType == ResultMessageType.SentMessageSuccess ? "Your message has been sent."
-                    : resultMessageType == ResultMessageType.ChangeInfoSuccess ? "Your information has been changed."
-                    : resultMessageType == ResultMessageType.RemoveLoginSuccess ? "The external login was removed."
-                    : resultMessageType == ResultMessageType.InvalidCredentials ? "Invalid username or password."
-                    : resultMessageType == ResultMessageType.InvalidUser? "Invalid user."
-                    : resultMessageType == ResultMessageType.Error ? "An error has occurred."
-                    : "";
-        }
+            string message = string.Empty;
+            DisplayMessageType displayMessageType = DisplayMessageType.Error;
 
-        public void Success(string message, bool dismissable = true)
-        {
-            AddAlert(AlertStyles.Success, message, dismissable);
-        }
-
-        public void Information(string message, bool dismissable = true)
-        {
-            AddAlert(AlertStyles.Information, message, dismissable);
-        }
-
-        public void Warning(string message, bool dismissable = true)
-        {
-            AddAlert(AlertStyles.Warning, message, dismissable);
-        }
-
-        public void Error(string message, bool dismissable = true)
-        {
-            LogError(message);
-
-            AddAlert(AlertStyles.Danger, message, dismissable);
-        }
-
-        private void AddAlert(string alertStyle, string message, bool dismissable)
-        {
-            var alerts = TempData.ContainsKey(Alert.TempDataKey)
-                ? (List<Alert>)TempData[Alert.TempDataKey]
-                : new List<Alert>();
-
-            alerts.Add(new Alert
+            if (resultMessageType == null)
             {
-                AlertStyle = alertStyle,
-                Message = message,
-                Dismissable = dismissable
-            });
+                ProcessResultMessageType(actionResult, out resultMessageType);
+            }
 
-            TempData[Alert.TempDataKey] = alerts;
+            if (resultMessageType == null)
+                resultMessageType = ResultMessageType.Error;
+
+            ProcessMessageType(resultMessageType.Value, out displayMessageType, out message);
+
+            DisplayMessage displayMessage = new DisplayMessage(TempData);
+            displayMessage.Add(displayMessageType, message);
         }
 
-        public void LogError(string message)
+        protected void ProcessResultMessageType(Domain.ActionResult actionResult, out ResultMessageType? resultMessageType)
         {
-            Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception(message));
+            resultMessageType = ResultMessageType.Error;
+
+            if (actionResult == null)
+            {
+                resultMessageType = ResultMessageType.Error;
+            }
+
+            if (actionResult.OperationStatus is MessageEnum)
+            {
+                switch((MessageEnum)actionResult.OperationStatus)
+                {
+                    case MessageEnum.Success:
+                        resultMessageType = ResultMessageType.OperationSuccess;
+                        break;
+                    
+                    case MessageEnum.Error:
+                    default:
+                        resultMessageType = ResultMessageType.Error;
+                        break;
+                }
+            }
+            else if (actionResult.OperationStatus is SettingsEnum)
+            {
+                switch ((SettingsEnum)actionResult.OperationStatus)
+                {
+                    case SettingsEnum.Success:
+                        resultMessageType = ResultMessageType.OperationSuccess;
+                        break;
+
+                    case SettingsEnum.KeyAlreadyExists:
+                    case SettingsEnum.Error:
+                    default:
+                        resultMessageType = ResultMessageType.Error;
+                        break;
+                }
+            }
+            else if (actionResult.OperationStatus is UserEnum)
+            {
+                switch ((UserEnum)actionResult.OperationStatus)
+                {
+                    case UserEnum.Success:
+                        resultMessageType = ResultMessageType.OperationSuccess;
+                        break;
+
+                    case UserEnum.EmailAlreadyExists:
+                        resultMessageType = ResultMessageType.EmailAlreadyExists;
+                        break;
+
+                    case UserEnum.InvalidCredentials:
+                        resultMessageType = ResultMessageType.InvalidCredentials;
+                        break;
+
+                    case UserEnum.InvalidUser:
+                        resultMessageType = ResultMessageType.InvalidUser;
+                        break;
+
+                    case UserEnum.Error:
+                    default:
+                        resultMessageType = ResultMessageType.Error;
+                        break;
+                }
+            }
+        }
+
+        protected void ProcessMessageType(ResultMessageType resultMessageType, out DisplayMessageType displayMessageType, out string message)
+        {
+            displayMessageType = DisplayMessageType.Error;
+            message = string.Empty;
+
+            switch (resultMessageType)
+            {
+                case ResultMessageType.OperationSuccess:
+                    message = "Operação realizada com sucesso.";
+                    break;
+
+                case ResultMessageType.RegisterUserSuccess:
+                    message = "Utilizador registado com sucesso.";
+                    break;
+
+                case ResultMessageType.EmailAlreadyExists:
+                    message = "O Email indicado já se encontra registado.";
+                    break;
+
+                case ResultMessageType.SentMessageSuccess:
+                    message = "Mensagem enviada com sucesso.";
+                    break;
+
+                case ResultMessageType.ChangeInfoSuccess:
+                    message = "Informação atualizada com sucesso.";
+                    break;
+
+                case ResultMessageType.RemoveLoginSuccess:
+                    message = "The external login was removed.";
+                    break;
+
+                case ResultMessageType.InvalidCredentials:
+                    message = "Email ou Password inválido.";
+                    break;
+
+                case ResultMessageType.InvalidUser:
+                    message = "Utilizador inválido.";
+                    break;
+
+                case ResultMessageType.Error:
+                default:
+                    message = "Ocorreu um erro com o seu pedido.<br/>Por favor tente mais tarde.";
+                    break;
+            }
+
+        }
+
+        public void LogError(string message = null)
+        {
+            Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception((message ?? "Ocorreu um erro com o seu pedido.<br/>Por favor tente mais tarde.")));
         }
 
         protected override void Dispose(bool disposing)

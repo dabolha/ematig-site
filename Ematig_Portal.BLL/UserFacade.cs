@@ -1,5 +1,7 @@
 ﻿using Ematig_Portal.DAL;
 using Ematig_Portal.Domain;
+using Ematig_Portal.Domain.Enum.ActionResult;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,14 @@ namespace Ematig_Portal.BLL
 {
     public class UserFacade : FacadeBase<long, Domain.User>
     {
+        //TODO: RF
+        public IAuthenticationManager AuthenticationManager { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string NewPassword { get; set; }
+        public string OldPassword { get; set; }
+        
+
         public UserFacade()
             : base()
         {
@@ -24,14 +34,35 @@ namespace Ematig_Portal.BLL
         public override long Add(User input, ref ActionResult actionResult)
         {
             if (actionResult == null)
-                actionResult = new ActionResult();
+                actionResult = new ActionResult() { OperationStatus = UserEnum.Error };
 
-            if (input == null)
+            if (input == null || string.IsNullOrEmpty(input.Email))
                 return -1;
+
+            if (this.Repository.UserRepository.Any(item => (item.Email ?? "").Trim().ToLower() == (input.Email ?? "").Trim().ToLower()))
+            {
+                actionResult.OperationStatus = UserEnum.EmailAlreadyExists;
+                return -1;
+            }
+
+            IdentityFacade identityService = new IdentityFacade();
+            identityService.AuthenticationManager = this.AuthenticationManager;
+
+            var identityUser = new Domain.ApplicationUser()
+            {
+                UserName = this.UserName
+            };
+
+            string id = identityService.Add(identityUser, this.Password);
+            if (string.IsNullOrEmpty(id))
+            {
+                actionResult.OperationStatus = UserEnum.Error;
+                return -1;
+            }
 
             Domain.User user = new Domain.User()
             {
-                AuthId = input.AuthId,
+                AuthId = id,
                 FirstName = input.FirstName,
                 LastName = input.LastName,
                 Gender = input.Gender,
@@ -39,7 +70,7 @@ namespace Ematig_Portal.BLL
                 PostCode = input.PostCode,
                 MobilePhoneNumber = input.MobilePhoneNumber,
                 BirthDate = input.BirthDate,
-                Email = input.Email,
+                Email = input.Email.Trim().ToLower(),
                 PhoneNumber = input.PhoneNumber,
                 CreationDate = DateTime.Now,
                 ModificationDate = DateTime.Now
@@ -49,6 +80,7 @@ namespace Ematig_Portal.BLL
 
             if (actionResult.Success = this.Repository.Save())
             {
+                actionResult.OperationStatus = UserEnum.Success;
                 return user.Id;
             }
 
@@ -59,7 +91,7 @@ namespace Ematig_Portal.BLL
         public override void Update(User input, ref ActionResult actionResult)
         {
             if (actionResult == null)
-                actionResult = new ActionResult();
+                actionResult = new ActionResult() { OperationStatus = UserEnum.Error };
 
             if (input == null)
                 return;
@@ -67,8 +99,11 @@ namespace Ematig_Portal.BLL
             var user = this.Repository.UserRepository.FirstOrDefault(item => item.Id == input.Id);
             if (user == null)
             {
+                actionResult.OperationStatus = UserEnum.InvalidUser;
                 return;
             }
+
+            bool identityDataChanged = (user.Email ?? "").Trim() != (input.Email ?? "").Trim();
 
             user.Email = (input.Email ?? "").Trim();
             user.FirstName = input.FirstName;
@@ -81,8 +116,32 @@ namespace Ematig_Portal.BLL
             user.PhoneNumber = input.PhoneNumber;
             user.ModificationDate = DateTime.Now;
 
-            actionResult.Success = this.Repository.Save();
+            #region Email / Password changed
+            if (identityDataChanged)
+            {
+                IdentityFacade identityService = new IdentityFacade();
+                identityService.AuthenticationManager = this.AuthenticationManager;
+                
+                var identityUser = identityService.GetByKey(user.AuthId);
+                if (identityUser == null)
+                {
+                    return;
+                }
 
+                identityUser.UserName = (input.Email ?? "").Trim();
+
+                bool result = identityService.Update(identityUser, this.OldPassword, this.NewPassword);
+                if (! result)
+                {
+                    return;
+                }
+            }
+            #endregion
+
+            if (actionResult.Success = this.Repository.Save())
+            {
+                actionResult.OperationStatus = UserEnum.Success;
+            }
         }
 
         public override void Delete(User input, ref ActionResult actionResult)
@@ -110,6 +169,5 @@ namespace Ematig_Portal.BLL
         {
             return this.Repository.UserRepository.ToList();
         }
-        
     }
 }

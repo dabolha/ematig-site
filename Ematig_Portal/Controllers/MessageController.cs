@@ -32,7 +32,8 @@ namespace Ematig_Portal.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("Contact", "Home");
             }
 
@@ -47,11 +48,12 @@ namespace Ematig_Portal.Controllers
 
             if (actionResult == null || !actionResult.Success)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("Contact", "Home");
             }
 
-            Success(ProcessResultMessage(ResultMessageType.SentMessageSuccess));
+            ProcessResult(null, ResultMessageType.SentMessageSuccess);
             return RedirectToAction("Contact", "Home");
         }
 
@@ -96,7 +98,8 @@ namespace Ematig_Portal.Controllers
             var message = this.MessageService.GetByKey(id);
             if (message == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
@@ -125,14 +128,16 @@ namespace Ematig_Portal.Controllers
                 || model == null
                 || model.Message == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
             var message = this.MessageService.GetByKey(model.Message.Id);
             if (message == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
@@ -144,12 +149,13 @@ namespace Ematig_Portal.Controllers
 
             if (actionResult == null || !actionResult.Success)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
             else
             {
-                Success(ProcessResultMessage(ResultMessageType.OperationSuccess), true);
+                ProcessResult(actionResult, ResultMessageType.OperationSuccess);
                 return RedirectToAction("All");
             }
         }

@@ -141,6 +141,9 @@
     <Compile Include="Constants\MessageTypeTemplate.cs" />
     <Compile Include="Constants\SettingKey.cs" />
     <Compile Include="DomainObject.cs" />
+    <Compile Include="Enum\ActionResult\SettingsEnum.cs" />
+    <Compile Include="Enum\ActionResult\MessageEnum.cs" />
+    <Compile Include="Enum\ActionResult\UserEnum.cs" />
     <Compile Include="Enum\Alert.cs" />
     <Compile Include="Enum\MessageTypeEnum.cs" />
     <Compile Include="Enum\ResultMessageType.cs" />

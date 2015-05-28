@@ -43,14 +43,16 @@ namespace Ematig_Portal.Controllers
         {
             if (string.IsNullOrEmpty(key))
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
             var setting = this.SettingsService.GetByKey(key);
             if (setting == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
@@ -77,14 +79,16 @@ namespace Ematig_Portal.Controllers
                 || string.IsNullOrEmpty(model.Setting.Key) 
                 || string.IsNullOrEmpty(model.Setting.Value))
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
             var setting = this.SettingsService.GetByKey(model.Setting.Key);
             if (setting == null)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
 
@@ -95,12 +99,13 @@ namespace Ematig_Portal.Controllers
             this.SettingsService.Update(setting, ref actionResult);
             if (actionResult == null || ! actionResult.Success)
             {
-                Error(ProcessResultMessage(ResultMessageType.Error));
+                ProcessResult(null, ResultMessageType.Error);
+                LogError();
                 return RedirectToAction("All");
             }
             else
             {
-                Success(ProcessResultMessage(ResultMessageType.OperationSuccess), true);
+                ProcessResult(actionResult, ResultMessageType.OperationSuccess);
                 return RedirectToAction("All");
             }
 

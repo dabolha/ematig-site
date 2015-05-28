@@ -1,5 +1,6 @@
 ﻿using Ematig_Portal.DAL;
 using Ematig_Portal.Domain;
+using Ematig_Portal.Domain.Enum.ActionResult;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Ematig_Portal.BLL
         public override void Update(Settings input, ref ActionResult actionResult)
         {
             if (actionResult == null)
-                actionResult = new ActionResult();
+                actionResult = new ActionResult() { OperationStatus = SettingsEnum.Error };
 
             if (input == null)
                 return;
@@ -41,7 +42,10 @@ namespace Ematig_Portal.BLL
 
             setting.Value = input.Value;
 
-            actionResult.Success = this.Repository.Save();
+            if (actionResult.Success = this.Repository.Save())
+            {
+                actionResult.OperationStatus = SettingsEnum.Success;
+            }
         }
 
         public override void Delete(Settings input, ref ActionResult actionResult)
