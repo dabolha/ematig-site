@@ -239,6 +239,17 @@
     <Compile Include="Helpers\Framework\UrlHelperExtensions.cs" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\img\home\01.jpg" />
+    <Content Include="Content\img\home\02.jpg" />
+    <Content Include="Content\img\home\03.jpg" />
+    <Content Include="Content\img\home\04.jpg" />
+    <Content Include="Content\img\home\img03.jpg" />
+    <Content Include="Content\img\home\img08.jpg" />
+    <Content Include="Content\img\home\img09.png" />
+    <Content Include="Content\img\home\img10.jpg" />
+    <Content Include="Content\img\home\img11.jpg" />
+    <Content Include="Content\scripts\ie10-viewport-bug-workaround.js" />
+    <Content Include="Content\scripts\jssor.slider.mini.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -494,7 +505,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Error\BadRequest.cshtml" />
@@ -529,7 +539,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

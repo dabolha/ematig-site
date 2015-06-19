@@ -3,27 +3,156 @@
     ViewBag.Title = "Início";
 }
 
+<div class="container">
+    <div id="slider1_container" style="display: none; position: relative; margin: 0 auto; width: 1263px; height: 700px; overflow: hidden; ">
 
-<div class="intro-header img1">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="intro-message">
-                    <h2>A escolha acertada para o seu negócio</h2>
-                    <hr class="intro-divider">
-                    <ul class="list-inline intro-social-buttons">
-                        <li>
-                            <a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-default btn-lg"><span class="network-name">Saber mais</span></a>
-                        </li>
-                    </ul>
+        <!-- Loading Screen -->
+        <div u="loading" style="position: absolute; top: 0px; left: 0px;">
+            <div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
+
+                background-color: #000; top: 0px; left: 0px;width: 100%; height:100%;">
+            </div>
+            <div style="position: absolute; display: block; background: url(../Content/img/loading.gif) no-repeat center center;
+
+                top: 0px; left: 0px;width: 100%;height:100%;">
+            </div>
+        </div>
+
+        <!-- Slides Container -->
+        <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1263px; height: 700px; overflow: hidden;">
+            <div>
+                <img u="image" src2="../Content/img/home/img08.jpg" />
+                <div class="intro-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="intro-message">
+                                    <h2>A escolha acertada para o seu negócio</h2>
+                                    <hr class="intro-divider">
+                                    <ul class="list-inline intro-social-buttons">
+                                        <li>
+                                            <a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-default btn-lg"><span class="network-name">Saber mais</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container -->
                 </div>
             </div>
+            <div>
+        <img u="image" src2="../Content/img/home/img10.jpg" />
+        <div class="intro-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="intro-message">
+                            <h2>Garantimos os melhores equipamentos<br/>para o seu negócio</h2>
+                            <hr class="intro-divider">
+                            <ul class="list-inline intro-social-buttons">
+                                <li>
+                                    <a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-info btn-lg"><span class="network-name">Saber mais</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </div>
+    </div>
+    <div>
+        <img u="image" src2="../Content/img/home/img11.jpg" />
+        <div class="intro-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="intro-message">
+                            <h2>Garantimos o melhor material didático para<br />o seu estabelecimento de ensino</h2>
+                            <hr class="intro-divider">
+                            <ul class="list-inline intro-social-buttons">
+                                <li>
+                                    <a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-info btn-lg"><span class="network-name">Saber mais</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </div>
+    </div>
+    <div>
+        <img u="image" src2="../Content/img/home/img03.jpg" />
+        <div class="intro-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="intro-message">
+                            <h2>Falamos o teu idioma e contamos com os<br />melhores especialistas para te ajudar.</h2>
+                            <hr class="intro-divider">
+                            <ul class="list-inline intro-social-buttons">
+                                <li>
+                                    <a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-info btn-lg"><span class="network-name">Saber mais</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </div>
+    </div>
+        </div>
+
+        <!-- bullet navigator container -->
+        <div u="navigator" class="jssorb05" style="bottom: 16px; right: 6px;">
+            <!-- bullet navigator item prototype -->
+            <div u="prototype"></div>
+        </div>
+        <span u="arrowleft" class="jssora11l" style="top: 123px; left: 8px;">
+        </span>
+        <!-- Arrow Right -->
+        <span u="arrowright" class="jssora11r" style="top: 123px; right: 8px;">
+        </span>
+        <!--#endregion Arrow Navigator Skin End -->
+        <a style="display: none" href="http://www.jssor.com">Bootstrap Slider</a>
+    </div>
+</div>
+
+<!-- SEP -->
+<div class="page-sep arrow blue">
+    <div class="container container_padding">
+        <div class="row">
+            <h4>Sobre nós</h4>
+        </div>
+    </div>
+</div>
+
+<section class="section-intro">
+    <div class="container container_padding">
+        <div class="row">
+            <p>A EMATIG, LDA é uma empresa de direito angolano, criada à 28 de Julho de 1992, com sede em Luanda.</p>
+            <br />
+            <p>O nosso objecto social é o comércio e prestação de assistência técnica aos equipamentos de escritório, nomeadamente: computadores, fotocopiadoras, centrais telefónicas, telefones, máquinas de calcular, máquinas de escrever, telefax, impressoras, consumíveis de natureza diversa, mobiliário de escritório, mobiliário informático, execução de material publicitário e artes gráficas.</p>
+            <br />
+            <p>Paralelamente a esta actividade e em parceria com um grupo de conceituadas Empresas Portuguesas, também dispomos de materiais didácticos e laboratórios escolares.</p>
         </div>
     </div>
     <!-- /.container -->
+</section>
+
+<!-- SEP -->
+<div class="page-sep arrow blue">
+    <div class="container container_padding">
+        <div class="row">
+            <h4>Sucesso</h4>
+        </div>
+    </div>
 </div>
 
-<section class="section-intro height1">
+<section class="section-intro height4">
     <div class="container container_padding box_size1">
         <div class="row">
             <div class="col-lg-12">
@@ -33,32 +162,105 @@
     </div>
 </section>
 
-<section class="section-intro intro-parallax1 bg-2">
-    <div class="col-sm-6 col-sm-offset-3 text-center">
-        <h1>Garantimos os melhores equipamentos para o seu negócio</h1>
-        <p><a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-info btn-lg"><span class="network-name">Saber mais</span></a></p>
-    </div>
-</section>
-
-<section class="section-intro">
-        <div class="container container_padding">
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Apoio técnico</h2>
-                    <p class="lead">Falamos o teu idioma e contamos com os melhores especialistas para te ajudar.</p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6 col-sm-6 box_radius1">
-                    <img class="img-responsive" src="../Content/img/img03.jpg" alt="">
-                </div>
-            </div>
+<!-- SEP -->
+<div class="page-sep arrow blue">
+    <div class="container container_padding">
+        <div class="row">
+            <h4>O nosso foco</h4>
         </div>
-        <!-- /.container -->
+    </div>
+</div>
+
+<section class="section-intro height1 box3">
+    <div class="container container_padding">
+        <div class="row container_padding">
+            <article class="col-md-4" role="article">
+                <header>
+                    <h2>Apoio Técnico</h2>
+                </header>
+                <p>A área onde a empresa dedica a sua maior atenção é no apoio técnico. A assistência técnica é assegurada por técnicos especializados, que regularmente beneficiam de estágios de actualização no exterior do país.</p>
+            </article>
+            <article class="col-md-4" role="article">
+                <header>
+                    <h2>O que fazemos</h2>
+                </header>
+                <p>No fim do dia não nos restam dúvidas, simplificamos a tua vida. Damos-te a liberdade e facilidade que procuras.</p>
+            </article>
+            <article class="col-md-4" role="article">
+                <header>
+                    <h2>E Porquê</h2>
+                </header>
+                <p>Porque admiramos os objetivos dos nossos clientes e queremos ajudá-los a simplificar e a ir mais além.</p>
+            </article>
+        </div>
+    </div>
+    <!-- /.container -->
 </section>
 
-<section class="section-intro intro-parallax1 bg-3">
-    <div class="col-sm-6 col-sm-offset-3 text-center">
-        <h1>Garantimos o melhor material didático para o seu estabelecimento de ensino</h1>
-        <p><a href="@Url.RouteUrl(HomeControllerRoute.GetSolutions)" class="btn btn-info btn-lg"><span class="network-name">Saber mais</span></a></p>
-    </div>
-</section>
+<script src="../Content/Scripts/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript" src="../Content/Scripts/jssor.slider.mini.js"></script>
+<script>
+
+    jQuery(document).ready(function ($) {
+        var options = {
+            $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+            $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
+            $AutoPlayInterval: 3000,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+            $PauseOnHover: 1,                                   //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+
+            $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+            $SlideEasing: $JssorEasing$.$EaseOutQuint,          //[Optional] Specifies easing for right to left animation, default value is $JssorEasing$.$EaseOutQuad
+            $SlideDuration: 800,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+            $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+            //$SlideWidth: 600,                                 //[Optional] Width of every slide in pixels, default value is width of 'slides' container
+            //$SlideHeight: 300,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
+            $SlideSpacing: 0, 					                //[Optional] Space between each slide in pixels, default value is 0
+            $DisplayPieces: 1,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+            $ParkingPosition: 0,                                //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+            $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+            $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+            $DragOrientation: 1,                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+
+            $ArrowNavigatorOptions: {                           //[Optional] Options to specify and enable arrow navigator or not
+                $Class: $JssorArrowNavigator$,                  //[Requried] Class to create arrow navigator instance
+                $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                $AutoCenter: 2,                                 //[Optional] Auto center arrows in parent container, 0 No, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                $Steps: 1,                                      //[Optional] Steps to go for each navigation request, default value is 1
+                $Scale: false                                   //Scales bullets navigator or not while slider scale
+            },
+
+            $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
+                $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
+                $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                $AutoCenter: 1,                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                $Steps: 1,                                      //[Optional] Steps to go for each navigation request, default value is 1
+                $Lanes: 1,                                      //[Optional] Specify lanes to arrange items, default value is 1
+                $SpacingX: 12,                                   //[Optional] Horizontal space between each item in pixel, default value is 0
+                $SpacingY: 4,                                   //[Optional] Vertical space between each item in pixel, default value is 0
+                $Orientation: 1,                                //[Optional] The orientation of the navigator, 1 horizontal, 2 vertical, default value is 1
+                $Scale: false                                   //Scales bullets navigator or not while slider scale
+            }
+        };
+
+        //Make the element 'slider1_container' visible before initialize jssor slider.
+        $("#slider1_container").css("display", "block");
+        var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+
+        //responsive code begin
+        //you can remove responsive code if you don't want the slider scales while window resizes
+        function ScaleSlider() {
+            var parentWidth = jssor_slider1.$Elmt.parentNode.clientWidth;
+            if (parentWidth) {
+                jssor_slider1.$ScaleWidth(parentWidth);
+            }
+            else
+                window.setTimeout(ScaleSlider, 30);
+        }
+        ScaleSlider();
+
+        $(window).bind("load", ScaleSlider);
+        $(window).bind("resize", ScaleSlider);
+        $(window).bind("orientationchange", ScaleSlider);
+        //responsive code end
+    });
+</script>

@@ -41,12 +41,6 @@
             return this.View(HomeControllerAction.Solutions);
         }
 
-        [Route("about", Name = HomeControllerRoute.GetAbout)]
-        public ActionResult About()
-        {
-            return this.View(HomeControllerAction.About);
-        }
-
         [Route("contact", Name = HomeControllerRoute.GetContact)]
         public ActionResult Contact()
         {
