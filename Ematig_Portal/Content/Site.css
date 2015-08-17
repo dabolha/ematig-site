@@ -371,6 +371,12 @@ p.copyright {
   color:#333333;
 }
 
+.bg-4{
+    background-color:#f8f8f8;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
 .section-intro {
   color: #ffffff;
   min-height: 400px;
@@ -516,3 +522,7 @@ p.copyright {
             .jssora11r.jssora11rdn {
                 background-position: -311px -41px;
             }
+
+.center{
+    text-align:center;
+}
